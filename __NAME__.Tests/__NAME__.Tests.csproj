@@ -95,6 +95,12 @@
   <ItemGroup>
     <Content Include="specwatchr-usage.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\__NAME__\__NAME__.csproj">
+      <Project>{977dac5f-dd92-4c00-a5c8-8a1b4072d39a}</Project>
+      <Name>__NAME__</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
