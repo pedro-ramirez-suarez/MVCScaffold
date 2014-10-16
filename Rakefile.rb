@@ -20,6 +20,10 @@ task :rake_dot_net_initialize do
   @mvc_project_directory = yml["mvc_project"]
   @database_name = yml["database_name"]
 
+  @iis_express = IISExpress.new
+  @iis_express.execution_path = yml["iis_express"]
+  @web_deploy = WebDeploy.new
+
   @test_project = yml["test_project"]
   @test_dll = "./#{ yml["test_project"] }/bin/debug/#{ yml["test_project"] }.dll "
 
