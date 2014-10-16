@@ -112,6 +112,5 @@ def get_has_many_labels model
                 </td>
             </tr>"
     end
-    puts labels
     labels
 end

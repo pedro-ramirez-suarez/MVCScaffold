@@ -46,7 +46,7 @@ def get_labels_index model
 
 
     elements.each do |node|    
-        next if (node.name.to_s == "Id" || node.has_attribute?("SelectFrom") || node.has_attribute?("HasOne"))
+        next if (node.name.to_s == "Id" || node.has_attribute?("SelectFrom") || node.has_attribute?("HasOne")) || node.xpath("@validator='date'")
 
         property_name = node.name
         labels += "
@@ -63,7 +63,7 @@ def get_columns_names model
 
 
     elements.each do |node|    
-        next if (node.name.to_s == "Id" || node.has_attribute?("SelectFrom") || node.has_attribute?("HasOne"))
+        next if (node.name.to_s == "Id" || node.has_attribute?("SelectFrom") || node.has_attribute?("HasOne")) || node.xpath("@validator='date'")
 
         property_name = node.name
         labels += "

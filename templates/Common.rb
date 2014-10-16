@@ -112,3 +112,39 @@ def get_datepicker_template model, file_type
 
     result
 end
+
+def get_has_many_template model, file_type = ""
+    result = ""
+
+    case file_type
+    when 'edit'
+        has_many_entities = model.xpath("//HasMany/entity")
+        has_many_entities.each do |node|
+            entityName = node.attribute("name")
+            list_name = node.attribute("listName")
+            display_name = 
+                result += "
+                <div class='form-group'>
+                    <label class='col-sm-2 control-label'>#{entityName}(s)</label>
+                    <div class='col-sm-4'>
+                        <table class=\"table table-striped\" >
+                            <thead>
+                                <tr>
+                                    #{get_columns_names(node)}
+                                </tr>
+                            </thead>
+                            <tbody data-bind=\"foreach: #{list_name}\">
+                                <tr>
+                                    #{get_labels_index node}
+                                    <td><a data-bind=\"attr: {href: '/#{entityName}/Edit/' + Id}\">Edit</a></td>
+                                </tr>
+                            </tbody>
+                        </table>  
+                    </div>
+                </div>"
+        end
+        
+    end
+
+    result 
+end

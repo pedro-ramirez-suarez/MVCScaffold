@@ -65,6 +65,8 @@ def get_fields_edit model
         end
         
     end
+
+    fields += get_has_many_template(model, 'edit')
     fields
 
 end
