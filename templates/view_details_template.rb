@@ -106,9 +106,6 @@ def get_has_many_labels model
                         <tbody data-bind=\"foreach: #{list_name}\">
                             <tr>
                                 #{get_labels_index node}
-                                <td><a data-bind=\"attr: {href: '/#{entityName}/Details/' + Id}\">Details</a></td>
-                                <td><a data-bind=\"attr: {href: '/#{entityName}/Edit/' + Id}\">Edit</a></td>
-                                <td><a data-bind=\"click: $parent.remove\">Remove</a></td>
                             </tr>
                         </tbody>
                     </table>
