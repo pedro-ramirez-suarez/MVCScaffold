@@ -27,12 +27,16 @@ using Needletail.SampleModel.Model.ViewModel;
 
 namespace #{@solution_name_sans_extension}.Controllers
 {
+
+    //Basic Controller template, avoid adding bussiness logic code here, use the Repository instead
     public class #{name}Controller : Controller
     {
         
         #{get_repositories(model, 'declaration')}
 
         public #{name}Controller() {
+
+            //Remove this line if you want to use dependency injection 
             #{get_repositories(model, 'init')}
         }
 

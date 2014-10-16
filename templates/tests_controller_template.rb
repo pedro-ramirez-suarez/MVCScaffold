@@ -17,13 +17,17 @@ namespace #{@solution_name_sans_extension}.Tests
     class #{name}Controller_spec: nspec
     {
         #{name}Controller controller;
+
+        //This method runs before any test
         void before_each()
         {   
             //Add any initialization code here
+            //Uncomment this line to debug the tests
             //System.Diagnostics.Debugger.Launch();
             controller = new #{name}Controller(); 
         }
             
+        //Simple test for the Index method
         void specify_controllerIndex()
         { 
             var result = controller.Index() as ViewResult;
@@ -31,10 +35,9 @@ namespace #{@solution_name_sans_extension}.Tests
             #{name}List.should_not_be_empty(); 
         }
 
-        void specify_faillMe()
-        {
-            "foo".should_not_be("fo1o");
-        }
+        //Add Create, Edit and Delete tests in here
+        //Check documentation here:  http://nspec.org/#helloworld
+
     }
 }
 template

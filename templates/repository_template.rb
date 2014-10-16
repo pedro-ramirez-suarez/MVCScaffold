@@ -11,6 +11,7 @@ using Needletail.DataAccess;
 
 namespace #{@solution_name_sans_extension}.Repositories
 {
+    //Add Bussiness logic here
     public class #{name}Repository : IDisposable, IDataSource<#{name}, #{keytype}> 
     {
         DBTableDataSourceBase<#{name}, #{keytype}> dataSource;
