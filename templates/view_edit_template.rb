@@ -19,7 +19,7 @@ return <<template
         <div class="col-sm-offset-2 col-sm-10">
             <!-- Do NOT use name="submit" or id="submit" for the Submit button -->
             <button type="submit" class="btn btn-primary">Save</button>
-
+            <button type="button" class="btn btn-danger" onclick="window.history.go(-1)">Cancel</button>
         </div>
     </div>
 </form>
