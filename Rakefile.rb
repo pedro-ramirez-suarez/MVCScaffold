@@ -41,6 +41,17 @@ task :build => :rake_dot_net_initialize do
   @sln.build @solution_name 
 end
 
+desc "deploys MVC app to directory that iis express will use to run"
+task :deploy => :rake_dot_net_initialize do 
+  @web_deploy.deploy @mvc_project_directory, @website_deploy_directory
+end
+
+desc "start iis express for MVC app"
+task :server => :rake_dot_net_initialize do
+  sh @iis_express.command @website_deploy_directory, @website_port
+end
+
+
 desc "run nspec tests"
 task :tests => :build do
   puts "Could not find the NSpec test runner at location #{ @test_runner_path }, update your dev.yml to point to the correct runner location." if !File.exists? @test_runner_path
