@@ -87,21 +87,34 @@ end
 
 def get_has_many_labels model
     labels = ""
-    has_many = model.xpath("//HasMany")
-    has_many.each do |node|
-        entityName = node.at_xpath("entity").attribute("name")
-        list_name = node.at_xpath("entity").attribute("listName")
+
+    has_many_entities = model.xpath("//HasMany/entity")
+    has_many_entities.each do |node|
+        entityName = node.attribute("name")
+        list_name = node.attribute("listName")
+        display_name = 
             labels += "
             <tr>
                 <td>#{entityName}(s):</td>
                 <td>
-                    <ul data-bind='foreach: #{list_name}'>
-                        <li>
-                            <a data-bind='text: Name, attr:{href:\"/#{entityName}/edit/\" + Id}'></a>       
-                        </li>
-                    </ul>
+                    <table class=\"table table-striped\" >
+                        <thead>
+                            <tr>
+                                #{get_columns_names(node)}
+                            </tr>
+                        </thead>
+                        <tbody data-bind=\"foreach: #{list_name}\">
+                            <tr>
+                                #{get_labels_index node}
+                                <td><a data-bind=\"attr: {href: '/#{entityName}/Details/' + Id}\">Details</a></td>
+                                <td><a data-bind=\"attr: {href: '/#{entityName}/Edit/' + Id}\">Edit</a></td>
+                                <td><a data-bind=\"click: $parent.remove\">Remove</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </td>
             </tr>"
     end
+    puts labels
     labels
 end
