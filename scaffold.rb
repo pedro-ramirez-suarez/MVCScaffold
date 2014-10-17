@@ -63,11 +63,11 @@ namespace :gen do
 		name = main_model['name']
  		primaryKeyType = main_model['primaryKeyType']
 
-		create_controller_template main_model, primaryKeyType
-
 		create_views_templates main_model
 
   		create_js_templates main_model
+
+		create_controller_template main_model, primaryKeyType
 
 		create_repository_template name, primaryKeyType
 
@@ -207,6 +207,9 @@ namespace :gen do
 	def create_js_templates model
 		name = model['name']
 		folder "Scripts/app"
+		
+		save js_require_config_template, "#{@mvc_project_directory}/Scripts/app/require.config.js"
+		add_js_node "require.config"
 
 		save js_binding_template(model), "#{@mvc_project_directory}/Scripts/app/#{name}.binding.js"
 		add_js_node "#{name}.binding"
@@ -214,8 +217,6 @@ namespace :gen do
 		save js_model_validate_template(model), "#{@mvc_project_directory}/Scripts/app/#{name}.validate.js"
 		add_js_node "#{name}.validate"
 
-		save js_require_config_template, "#{@mvc_project_directory}/Scripts/app/require.config.js"
-		add_js_node "require.config"
 	end
 
 	def create_db_context_templates name
