@@ -101,7 +101,7 @@ def get_datepicker_template model, file_type
         });"
     
     when 'validate_use'
-        result = "viewModel.#{entity_name}s()[0].#{entity_name}.#{property_name} = viewModel.dateSelected();"
+        result = "viewModel.#{entity_name}s()[0].#{(entity_name + '.') if @is_view_model}#{property_name} = viewModel.dateSelected();"
     when 'edit_create'
         result = @form_fields[:datepicker] %[property_name, property_name, property_name]
     when 'binding_add'
