@@ -38,16 +38,22 @@ namespace :gen do
 		create_controller_template main_model, primaryKeyType
 	end
 
-	desc "Adds a new api controller, example: rake gen:api[User]"
-	task :api, [:model] => :rake_dot_net_initialize do |t, args|
+	desc "creates an xml file from a dll model, example: rake gen:new_xml_file[User]"
+	task :create_xml_file, [:model] => :rake_dot_net_initialize do |t, args|
 		raise "name parameter required, example: rake gen:api[User]" if args[:model].nil?
 		model_name = args[:model]
 		file_name = model_name.ext("xml")
-		file_path = "XmlGenerator/#{file_name}"
+
+		system("XmlGenerator/Generator.exe Views #{model_name} #{@mvc_project_directory}") unless File.exists?(file_name)
+	end
+
+	desc "Adds a new api controller, example: rake gen:api[User]"
+	task :api, [:model] => [:rake_dot_net_initialize, :create_xml_file] do |t, args|
+		raise "name parameter required, example: rake gen:api[User]" if args[:model].nil?
+		model_name = args[:model]
+		file_name = model_name.ext("xml")
 
 		verify_file_name file_name
-
-		system("XmlGenerator/Generator.exe Views #{model_name} #{@mvc_project_directory}")
 
  		xml_file = File.open(file_name)
  		nkg_xml_model = Nokogiri::XML(xml_file)
@@ -61,20 +67,14 @@ namespace :gen do
 
 
 	desc "adds a CRUD scaffold, example: rake gen:crudFor[Entity]"
-	task :crudFor, [:path] => :rake_dot_net_initialize do |t, args|
-		raise "name parameter required, example: rake gen:crudFor[User]" if args[:path].nil?
-		model_name = args[:path]
+	task :crudFor, [:model] => [:rake_dot_net_initialize, :create_xml_file] do |t, args|
+		raise "name parameter required, example: rake gen:crudFor[User]" if args[:model].nil?
+		model_name = args[:model]
 		file_name = model_name.ext("xml")
-		file_path = "XmlGenerator/#{file_name}"
 
 		verify_file_name file_name
 
-		system("XmlGenerator/Generator.exe Views #{model_name} #{@mvc_project_directory}")
-
 		xml_file = File.open(file_name)
-
-		raise "File #{file_name} not found!!." if xml_file.nil? 
-
  		nkg_xml_model = Nokogiri::XML(xml_file)
 		
  		@is_view_model = nkg_xml_model.xpath("//entity").length > 1
