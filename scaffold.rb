@@ -38,6 +38,26 @@ namespace :gen do
 		create_controller_template main_model, primaryKeyType
 	end
 
+	desc "Adds a new api controller, example: rake gen:api[User]"
+	task :api, [:model] => :rake_dot_net_initialize do |t, args|
+		raise "name parameter required, example: rake gen:api[User]" if args[:model].nil?
+		model_name = args[:model]
+		file_name = model_name.ext("xml")
+		file_path = "XmlGenerator/#{file_name}"
+
+		verify_file_name file_name
+
+		system("XmlGenerator/Generator.exe Views #{model_name} #{@mvc_project_directory}")
+
+ 		xml_file = File.open(file_name)
+ 		nkg_xml_model = Nokogiri::XML(xml_file)
+		
+ 		main_model = nkg_xml_model.xpath("//entity").first
+		name = main_model['name']
+ 		primaryKeyType = main_model['primaryKeyType']
+
+		create_api_controller_template main_model, primaryKeyType
+	end	
 
 
 	desc "adds a CRUD scaffold, example: rake gen:crudFor[Entity]"
@@ -183,6 +203,14 @@ namespace :gen do
 		save controller_template(model, keytype), "#{@mvc_project_directory}/Controllers/#{controller_name}.cs"
 		add_compile_node :Controllers, controller_name
 	end
+
+	def create_api_controller_template model, keytype
+		api_controller_name = model['name'] + "Controller"
+		folder "Controllers/Api"
+
+		save api_controller_template(model, keytype), "#{@mvc_project_directory}/Controllers/Api/#{api_controller_name}.cs"
+		add_compile_node "Controllers\\Api", api_controller_name
+	end
 	
 	def create_views_templates model
 		name = model['name']
@@ -224,7 +252,6 @@ namespace :gen do
 
 		save context_template(name), "#{@mvc_project_directory}/Context/#{name}Context.cs"
 		add_compile_node :Context, "#{name}Context"	
-		#add_db_connection_string
 	end
 
 	def create_tests_controller_template model
