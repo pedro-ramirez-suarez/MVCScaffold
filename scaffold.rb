@@ -23,7 +23,7 @@ namespace :gen do
 		model_name = args[:model]
 		file_name = model_name.ext("xml")
 
-		system("XmlGenerator/Generator.exe Views #{model_name} #{@mvc_project_directory}") unless File.exists?(file_name)
+		system("XmlGenerator/Generator.exe Views #{model_name} #{@mvc_project_directory}")
 	end
 
 	desc "Adds a new api controller, example: rake gen:api[User]"
