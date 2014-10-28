@@ -17,27 +17,6 @@ end
 
 namespace :gen do
 
-	desc ""
-	task :controller, [:model] => :rake_dot_net_initialize do |t, args|
-		raise "name parameter required, example: rake gen:controller[User]" if args[:model].nil?
-		model_name = args[:model]
-		file_name = model_name.ext("xml")
-
-		#exec("XmlGenerator/Generator.exe")
-
-		verify_file_name file_name
-
- 		xml_file = File.open(file_name)
- 		nkg_xml_model = Nokogiri::XML(xml_file)
-		
- 		@is_view_model = nkg_xml_model.xpath("//entity").length > 1
-
- 		main_model = nkg_xml_model.xpath("//entity").first
-		name = main_model['name']
- 		primaryKeyType = main_model['primaryKeyType']
-		create_controller_template main_model, primaryKeyType
-	end
-
 	desc "creates an xml file from a dll model, example: rake gen:new_xml_file[User]"
 	task :create_xml_file, [:model] => :rake_dot_net_initialize do |t, args|
 		raise "name parameter required, example: rake gen:api[User]" if args[:model].nil?
@@ -65,6 +44,92 @@ namespace :gen do
 		create_api_controller_template main_model, primaryKeyType
 	end	
 
+	desc "Adds a new controller, example: rake gen:controller[User]"
+	task :controller, [:model] => [:rake_dot_net_initialize, :create_xml_file] do |t, args|
+		raise "name parameter required, example: rake gen:controller[User]" if args[:model].nil?
+		model_name = args[:model]
+		file_name = model_name.ext("xml")
+
+		verify_file_name file_name
+
+ 		xml_file = File.open(file_name)
+ 		nkg_xml_model = Nokogiri::XML(xml_file)
+		
+ 		main_model = nkg_xml_model.xpath("//entity").first
+		name = main_model['name']
+ 		primaryKeyType = main_model['primaryKeyType']
+
+		create_controller_template main_model, primaryKeyType
+	end	
+
+	desc "Adds a new repository, example: rake gen:repository[User]"
+	task :repository, [:model] => [:rake_dot_net_initialize, :create_xml_file] do |t, args|
+		raise "name parameter required, example: rake gen:repository[User]" if args[:model].nil?
+		model_name = args[:model]
+		file_name = model_name.ext("xml")
+
+		verify_file_name file_name
+
+ 		xml_file = File.open(file_name)
+ 		nkg_xml_model = Nokogiri::XML(xml_file)
+		
+ 		main_model = nkg_xml_model.xpath("//entity").first
+		name = main_model['name']
+ 		primaryKeyType = main_model['primaryKeyType']
+
+		create_repository_template name, primaryKeyType
+	end	
+
+	desc "Adds a new view, example: rake gen:view[<Edit, Create, Details, List>, User]"
+	task :view, [:model, :type] => [:rake_dot_net_initialize, :create_xml_file] do |t, args|
+		raise "name and view type parameters are required, example: rake gen:view[Edit, User]" if args[:model].nil? || args[:type].nil?
+		type = args[:type].downcase
+		model_name = args[:model]
+		file_name = model_name.ext("xml")
+
+		verify_file_name file_name
+
+ 		xml_file = File.open(file_name)
+ 		nkg_xml_model = Nokogiri::XML(xml_file)
+		
+ 		model = nkg_xml_model.xpath("//entity").first
+		name = model['name']
+
+ 		folder "Views/#{name}"
+
+		case type
+		when "create"
+			save view_create_template(model), "#{@mvc_project_directory}/Views/#{name}/Create.cshtml"
+			add_cshtml_node name, "Create"
+		when "edit"
+			save view_edit_template(model), "#{@mvc_project_directory}/Views/#{name}/Edit.cshtml"
+			add_cshtml_node name, "Edit"
+		when "details"
+			save view_details_template(model), "#{@mvc_project_directory}/Views/#{name}/Details.cshtml"
+			add_cshtml_node name, "Details"
+		when "list"
+			save view_index_template(model), "#{@mvc_project_directory}/Views/#{name}/Index.cshtml"
+			add_cshtml_node name, "Index"
+		else
+			puts "View type is not valid."	
+		end
+	end	
+
+	desc "Adds a new test controller file, example: rake gen:test[ User]"
+	task :test, [:model] => [:rake_dot_net_initialize, :create_xml_file] do |t, args|
+		raise "name parameter required, example: rake gen:test[User]" if args[:model].nil?
+		model_name = args[:model]
+		file_name = model_name.ext("xml")
+
+		verify_file_name file_name
+
+ 		xml_file = File.open(file_name)
+ 		nkg_xml_model = Nokogiri::XML(xml_file)
+		
+ 		main_model = nkg_xml_model.xpath("//entity").first
+
+		create_tests_controller_template main_model
+	end	
 
 	desc "adds a CRUD scaffold, example: rake gen:crudFor[Entity]"
 	task :crudFor, [:model] => [:rake_dot_net_initialize, :create_xml_file] do |t, args|
@@ -90,7 +155,6 @@ namespace :gen do
 		create_views_templates main_model
 
   		create_js_templates main_model
-
 
 		create_tests_controller_template main_model
 
