@@ -38,7 +38,7 @@ define(['jquery', 'bootstrapValidator', 'moment', 'bootstrapDateTimePicker'], fu
                 data: JSON.stringify(jsonObj),
                 contentType: "application/json; charset=utf-8",
                 success: function (response) {
-                  window.location = response.url;  
+                  window.history.back();
                 }
             });
         });

@@ -2,6 +2,8 @@ def js_binding_template model
     name = model['name']
 return <<template
 define(['jquery', 'knockout', 'underscore', 'moment'], function ($, ko, _, moment) {
+    if ($("#refresh").val() == 'yes') { location.reload(); } else { $('#refresh').val('yes'); }
+        
     var model#{name} = [
     ];
 

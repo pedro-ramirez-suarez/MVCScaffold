@@ -9,6 +9,8 @@ return <<template
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<input type="hidden" id="refresh" value="no">
+
 <h2>Details</h2>
 <div data-bind="foreach: #{model['name']}s">
     <table class="table table">

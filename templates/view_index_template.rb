@@ -8,6 +8,8 @@ return <<template
     
 }
 
+<input type="hidden" id="refresh" value="no">
+
 <h2>#{name}</h2>
 <table class="table table-striped" >
     <thead>
