@@ -26,6 +26,22 @@ namespace :gen do
 		system("XmlGenerator/Generator.exe Views #{model_name} #{@mvc_project_directory}")
 	end
 
+	desc "Adds a new model from an xml, example: rake gen:model[User]"
+	task :model, [:model] => [:rake_dot_net_initialize] do |t, args|
+		raise "name parameter required, example: rake gen:model[User]" if args[:model].nil?
+		model_name = args[:model]
+		file_name = model_name.ext("xml")
+
+		verify_file_name file_name
+
+ 		xml_file = File.open(file_name)
+ 		nkg_xml_model = Nokogiri::XML(xml_file)
+		
+		nkg_xml_model.xpath("//entity").each do |model|
+			create_model_template model
+ 		end
+	end	
+
 	desc "Adds a new api controller, example: rake gen:api[User]"
 	task :api, [:model] => [:rake_dot_net_initialize, :create_xml_file] do |t, args|
 		raise "name parameter required, example: rake gen:api[User]" if args[:model].nil?
