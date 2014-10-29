@@ -24,17 +24,8 @@ def get_fields_for_model elements
 
     elements.each do |node|    
         params = ""
-        if node.has_attribute?("hasOne")
-            if node.at_xpath("HasOne").attribute("ReferencedField").to_s == "Id"
-               type = "int" 
-            end
-        elsif node.has_attribute?("hasMany")
-            type = "List<int>"
-        elsif node.name == "Id"
-            type = elements.xpath("//entity").first['primaryKeyType']
-        else
-            type = "string"
-        end
+
+        type = get_data_type node
 
         attrParams = node.at_css("Validator") ? node.at_css("Validator").attribute_nodes : []
 
@@ -79,4 +70,27 @@ def get_attributes property
     end
 
     result
+end
+
+def get_data_type property
+    type = "string"
+    name = property.name.to_s
+
+    if name == "Id" || (name[(name.length() -2)...name.length] == "Id")
+        type = property.xpath("//entity").first['primaryKeyType']
+    elsif property.has_attribute?('validator')
+        is_required = false
+        attributes = property.attribute('validator').to_s().split(' ')
+
+        attributes.map! { |attribute| 
+            is_required = attribute == "notEmpty" || is_required
+            attribute = @dictionary_data_types[attribute] || next
+            type = attribute
+        }
+
+        type += "?" if !is_required && type != "string"
+
+    end
+
+    type
 end
