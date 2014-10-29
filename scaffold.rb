@@ -34,6 +34,8 @@ namespace :gen do
 
 		verify_file_name file_name
 
+		system("XmlGenerator/Generator.exe Model #{model_name} #{@mvc_project_directory}")
+
  		xml_file = File.open(file_name)
  		nkg_xml_model = Nokogiri::XML(xml_file)
 		
