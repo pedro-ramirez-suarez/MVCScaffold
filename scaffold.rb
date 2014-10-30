@@ -20,7 +20,7 @@ namespace :gen do
 	desc "creates an xml file from a dll model, example: rake gen:new_xml_file[User]"
 	task :create_xml_file, [:model] => :rake_dot_net_initialize do |t, args|
 		raise "name parameter required, example: rake gen:api[User]" if args[:model].nil?
-		model_name = args[:model]
+		model_name = args[:model].capitalize
 		file_name = model_name.ext("xml")
 
 		system("XmlGenerator/Generator.exe Views #{model_name} #{@mvc_project_directory}")

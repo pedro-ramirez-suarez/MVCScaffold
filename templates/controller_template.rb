@@ -17,13 +17,11 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using #{@solution_name_sans_extension}.Repositories;
 using Needletail.DataAccess;
 using System.Configuration;
 using System.Web.Script.Serialization;
-using Needletail.SampleModel.Model.Entity;
-using Needletail.SampleModel.Model.ViewModel;
-
+using #{@solution_name_sans_extension}.Repositories;
+using #{@solution_name_sans_extension}.Models;
 
 namespace #{@solution_name_sans_extension}.Controllers
 {

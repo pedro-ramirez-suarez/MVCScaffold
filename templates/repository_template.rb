@@ -6,8 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Needletail.SampleModel.Model.Entity;
 using Needletail.DataAccess;
+using #{@solution_name_sans_extension}.Models;
 
 namespace #{@solution_name_sans_extension}.Repositories
 {

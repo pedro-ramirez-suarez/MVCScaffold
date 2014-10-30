@@ -10,9 +10,9 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Script.Serialization;
-using Needletail.SampleModel.Model.Entity;
 using Newtonsoft.Json;
 using #{@solution_name_sans_extension}.Repositories;
+using #{@solution_name_sans_extension}.Models;
 
 namespace #{@solution_name_sans_extension}.Controllers.Api
 {
