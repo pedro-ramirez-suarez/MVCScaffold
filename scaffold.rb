@@ -179,6 +179,7 @@ namespace :gen do
 		xml_file.close
 
 		puts "Process completed!!"
+		
 	end
 
 	desc "adds javascript file to your mvc project, example: rake gen:script[index]"
