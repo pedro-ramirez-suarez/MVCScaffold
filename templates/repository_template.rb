@@ -1,4 +1,4 @@
-def repository_template name, keytype
+def repository_template name, keytype, entityNameSpace
     name_downcase = name.downcase
 return <<template
 using System;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Needletail.DataAccess;
-using #{@solution_name_sans_extension}.Models;
+using #{entityNameSpace};
 
 namespace #{@solution_name_sans_extension}.Repositories
 {

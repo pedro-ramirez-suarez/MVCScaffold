@@ -1,4 +1,4 @@
-def controller_template model, keytype
+def controller_template model, keytype, entityNameSpace, root_namespace
     name = model['name']
     name_downcase = name.downcase
     viewModelSufix = ""    
@@ -21,7 +21,9 @@ using Needletail.DataAccess;
 using System.Configuration;
 using System.Web.Script.Serialization;
 using #{@solution_name_sans_extension}.Repositories;
-using #{@solution_name_sans_extension}.Models;
+using #{entityNameSpace};
+#{root_namespace}
+
 
 namespace #{@solution_name_sans_extension}.Controllers
 {

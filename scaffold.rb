@@ -58,8 +58,11 @@ namespace :gen do
  		main_model = nkg_xml_model.xpath("//entity").first
 		name = main_model['name']
  		primaryKeyType = main_model['primaryKeyType']
+ 		root_namespace = nkg_xml_model.xpath("//model").first['namespace']
+ 		entityNameSpace = main_model['namespace']
+		root_namespace = root_namespace == entityNameSpace ? '' : "using #{root_namespace};" 
 
-		create_api_controller_template main_model, primaryKeyType
+		create_api_controller_template main_model, primaryKeyType, entityNameSpace, root_namespace
 	end	
 
 	desc "Adds a new controller, example: rake gen:controller[User]"
@@ -76,8 +79,11 @@ namespace :gen do
  		main_model = nkg_xml_model.xpath("//entity").first
 		name = main_model['name']
  		primaryKeyType = main_model['primaryKeyType']
+		root_namespace = nkg_xml_model.xpath("//model").first['namespace']
+ 		entityNameSpace = main_model['namespace']
+		root_namespace = root_namespace == entityNameSpace ? '' : "using #{root_namespace};" 
 
-		create_controller_template main_model, primaryKeyType
+		create_controller_template main_model, primaryKeyType, entityNameSpace,root_namespace
 	end	
 
 	desc "Adds a new repository, example: rake gen:repository[User]"
@@ -94,8 +100,11 @@ namespace :gen do
  		main_model = nkg_xml_model.xpath("//entity").first
 		name = main_model['name']
  		primaryKeyType = main_model['primaryKeyType']
+ 		root_namespace = nkg_xml_model.xpath("//model").first['namespace']
+ 		entityNameSpace = main_model['namespace']
+		root_namespace = root_namespace == entityNameSpace ? '' : "using #{root_namespace};" 
 
-		create_repository_template name, primaryKeyType
+		create_repository_template name, primaryKeyType, entityNameSpace
 	end	
 
 	desc "Adds a new view, example: rake gen:view[<Edit, Create, Details, List>, User]"
@@ -161,14 +170,17 @@ namespace :gen do
  		nkg_xml_model = Nokogiri::XML(xml_file)
 		
  		@is_view_model = nkg_xml_model.xpath("//entity").length > 1
-
+ 		
  		main_model = nkg_xml_model.xpath("//entity").first
 		name = main_model['name']
  		primaryKeyType = main_model['primaryKeyType']
+ 		root_namespace = nkg_xml_model.xpath("//model").first['namespace']
+ 		entityNameSpace = main_model['namespace']
+		root_namespace = root_namespace == entityNameSpace ? '' : "using #{root_namespace};" 
 
-		create_repository_template name, primaryKeyType
+		create_repository_template name, primaryKeyType, entityNameSpace
 		
-		create_controller_template main_model, primaryKeyType
+		create_controller_template main_model, primaryKeyType, entityNameSpace, root_namespace
 
 		create_views_templates main_model
 
@@ -268,10 +280,10 @@ namespace :gen do
 		File.open(webconfig_file, "w") { |f| f.write(doc) }
 	end
 
-	def create_repository_template name, keytype
+	def create_repository_template name, keytype, entityNameSpace
 		folder "Repositories"
 		repository_name = name + "Repository"
-		save repository_template(name, keytype), "#{@mvc_project_directory}/Repositories/#{repository_name}.cs"
+		save repository_template(name, keytype,entityNameSpace), "#{@mvc_project_directory}/Repositories/#{repository_name}.cs"
 		add_compile_node :Repositories, repository_name
 	end
 
@@ -281,17 +293,17 @@ namespace :gen do
 		add_compile_node :Models, model_name
 	end
 
-	def create_controller_template model, keytype
+	def create_controller_template model, keytype, entityNameSpace, root_namespace
 		controller_name = model['name'] + "Controller"
-		save controller_template(model, keytype), "#{@mvc_project_directory}/Controllers/#{controller_name}.cs"
+		save controller_template(model, keytype, entityNameSpace, root_namespace), "#{@mvc_project_directory}/Controllers/#{controller_name}.cs"
 		add_compile_node :Controllers, controller_name
 	end
 
-	def create_api_controller_template model, keytype
+	def create_api_controller_template model, keytype, entityNameSpace, root_namespace
 		api_controller_name = model['name'] + "Controller"
 		folder "Controllers/Api"
 
-		save api_controller_template(model, keytype), "#{@mvc_project_directory}/Controllers/Api/#{api_controller_name}.cs"
+		save api_controller_template(model, keytype, entityNameSpace, root_namespace), "#{@mvc_project_directory}/Controllers/Api/#{api_controller_name}.cs"
 		add_compile_node "Controllers\\Api", api_controller_name
 	end
 	
