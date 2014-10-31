@@ -362,14 +362,16 @@ namespace :gen do
 		save tests_controller_template(model), "#{@test_project}/#{file_name}.cs"
 		add_compile_node :root, file_name, proj_tests_file
 	end
-	Rake::Task["model"].enhance do
-	  Rake::Task["rebuild"].invoke
-	end
-	Rake::Task["crudFor"].enhance do
-	  Rake::Task["rebuild"].invoke
-	end
-	Rake::Task["api"].enhance do
-	  Rake::Task["rebuild"].invoke
-	end
+
+	#remove the following comments if you are not going to use sidekick
+	#Rake::Task["model"].enhance do
+	#  Rake::Task["rebuild"].invoke
+	#end
+	#Rake::Task["crudFor"].enhance do
+	#  Rake::Task["rebuild"].invoke
+	#end
+	#Rake::Task["api"].enhance do
+	#  Rake::Task["rebuild"].invoke
+	#end
 end
 
