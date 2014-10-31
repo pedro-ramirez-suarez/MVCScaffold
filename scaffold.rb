@@ -42,6 +42,8 @@ namespace :gen do
 		nkg_xml_model.xpath("//entity").each do |model|
 			create_model_template model
  		end
+ 		xml_file.close	
+ 		File.delete(file_name)	
 	end	
 
 	desc "Adds a new api controller, example: rake gen:api[User]"
@@ -63,6 +65,9 @@ namespace :gen do
 		root_namespace = root_namespace == entityNameSpace ? '' : "using #{root_namespace};" 
 
 		create_api_controller_template main_model, primaryKeyType, entityNameSpace, root_namespace
+
+		xml_file.close
+		File.delete(file_name)	
 	end	
 
 	desc "Adds a new controller, example: rake gen:controller[User]"
@@ -189,7 +194,9 @@ namespace :gen do
 		create_tests_controller_template main_model
 
 		xml_file.close
-
+		#Delete the xml
+		File.delete(file_name)	
+		
 		puts "Process completed!!"
 		
 	end
