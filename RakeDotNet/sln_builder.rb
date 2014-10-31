@@ -17,6 +17,13 @@ class SlnBuilder
     @sh.execute command(sln)
   end
 
+def rebuild(sln)
+    Dir.glob("**/bin").each { |f| FileUtils.rm_rf f }
+    Dir.glob("**/obj").each { |f| FileUtils.rm_rf f }
+
+    @sh.execute command(sln) + " /t:Clean,Build"
+  end
+
   def bins
     Dir.glob("**/bin")
   end

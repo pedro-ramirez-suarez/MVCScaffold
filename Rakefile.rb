@@ -44,6 +44,11 @@ task :build => :rake_dot_net_initialize do
   @sln.build @solution_name 
 end
 
+desc "rebuilds the solution"
+task :rebuild => :rake_dot_net_initialize do
+  @sln.rebuild @solution_name 
+end
+
 desc "deploys MVC app to directory that iis express will use to run"
 task :deploy => :rake_dot_net_initialize do 
   @web_deploy.deploy @mvc_project_directory, @website_deploy_directory
