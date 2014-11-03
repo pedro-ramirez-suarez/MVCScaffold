@@ -59,6 +59,11 @@ task :server => :rake_dot_net_initialize do
   sh @iis_express.command @website_deploy_directory, @website_port
 end
 
+desc "Show help"
+task :help do
+  sh "start help\\help.html"
+end
+
 
 desc "run nspec tests"
 task :tests => :build do
