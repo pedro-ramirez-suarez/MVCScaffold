@@ -129,6 +129,43 @@ namespace #{@solution_name_sans_extension}.Controllers
             var result = #{name_downcase}Repository.Delete(where: new {Id = id});
             return result;
         }
+
+        [HttpPost]
+        public JsonResult GetAll#{name}(int page_num, int rows_per_page)
+        {
+            var list = new List<dynamic>();
+            var sortField = this.Request.Form["sorting[0][field]"];
+            var sort = this.Request.Form["sorting[0][order]"];
+
+            var registers = #{name_downcase}Repository.GetAll().ToList();
+            var rows = registers.Skip((page_num - 1) * rows_per_page).Take(rows_per_page);
+
+            if (DynamicOrdering.ContainsKey(sortField))
+            {
+                rows = (sort == "descending") ? rows.OrderByDescending(DynamicOrdering[sortField]) : rows.OrderBy(DynamicOrdering[sortField]);
+            }
+
+            
+            foreach (var row in rows)
+            {
+                var objId = row.Id.ToString();
+                list.Add(new
+                {
+                    #{get_properties(model, 'object')},
+                    edit = string.Format("<a href = \\"/#{name_downcase}/edit/{0}\\">Edit</a>", objId),
+                    details = string.Format("<a href = \\"/#{name_downcase}/Details/{0}\\">Details</a>", objId),
+                    delete = string.Format("<a href = \\"/#{name_downcase}/delete/{0}\\">Delete</a>", objId)
+                });
+            }
+
+            var result = Json(new { total_rows = registers.Count, page_data = list });
+            return result;
+        }
+
+        public Dictionary<String, Func<#{name}, IComparable>> DynamicOrdering = new Dictionary<string, Func<#{name}, IComparable>>
+                                                                                         {
+                                                                                             #{get_properties(model, 'dictionary')}
+                                                                                         };
     }
 }
 template
@@ -167,21 +204,43 @@ def init_view_model model
 
     view_bag
 end
- def get_has_ones model
-    has_ones = ""
-    model.xpath("//@HasOne").each do |node|
-        main_entity_name = model['name']
-        property_name = node
-        id_name = node.parent.name
 
-        nkg_obj = node.xpath("//entity")
-        has_one = nkg_obj.search("entity[objectName=#{property_name}]")
-        has_one_name = has_one.attribute('name')
+def get_has_ones model
+has_ones = ""
+model.xpath("//@HasOne").each do |node|
+    main_entity_name = model['name']
+    property_name = node
+    id_name = node.parent.name
 
-        has_ones += "
-            model.#{main_entity_name}.#{id_name} = Guid.NewGuid();
-            model.#{property_name} = new #{has_one_name}(){Id = model.#{main_entity_name}.#{id_name}};"
+    nkg_obj = node.xpath("//entity")
+    has_one = nkg_obj.search("entity[objectName=#{property_name}]")
+    has_one_name = has_one.attribute('name')
+
+    has_ones += "
+        model.#{main_entity_name}.#{id_name} = Guid.NewGuid();
+        model.#{property_name} = new #{has_one_name}(){Id = model.#{main_entity_name}.#{id_name}};"
+end
+
+has_ones
+end
+
+def get_properties model, type
+    name_downcase = model['name'].downcase
+    elements = model.at_xpath("fields").elements
+    fields = ""
+
+    elements.each do |node|    
+        property_name = node.name
+
+        case type
+        when "dictionary"
+            fields += "{\"#{property_name}\",opt => opt.#{property_name}},"
+        when "object"
+            fields += "
+                    #{property_name} = row.#{property_name},"
+        end
     end
 
-    has_ones
- end
+    fields.chomp(',')
+
+end

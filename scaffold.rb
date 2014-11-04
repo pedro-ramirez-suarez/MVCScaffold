@@ -112,11 +112,13 @@ namespace :gen do
 		create_repository_template name, primaryKeyType, entityNameSpace
 	end	
 
-	desc "Adds a new view, example: rake gen:view[<Edit, Create, Details, List>, User]"
-	task :view, [:model, :type] => [:rake_dot_net_initialize, :create_xml_file] do |t, args|
-		raise "name and view type parameters are required, example: rake gen:view[Edit, User]" if args[:model].nil? || args[:type].nil?
+	desc "Adds a new view, you can choose to use bs_grid plug in for index view with a optional third parameter <true>
+	, example: rake gen:view[<Edit, Create, Details, List>, User, <true>]"
+	task :view, [:model, :type, :use_bs_grid] => [:rake_dot_net_initialize, :create_xml_file] do |t, args|
+		raise "name and view type parameters are required, example: rake gen:view[Edit,User]" if args[:model].nil? || args[:type].nil?
 		type = args[:type].downcase
 		model_name = args[:model]
+		use_bs_grid = args[:use_bs_grid]
 		file_name = model_name.ext("xml")
 
 		verify_file_name file_name
@@ -140,7 +142,12 @@ namespace :gen do
 			save view_details_template(model), "#{@mvc_project_directory}/Views/#{name}/Details.cshtml"
 			add_cshtml_node name, "Details"
 		when "list"
-			save view_index_template(model), "#{@mvc_project_directory}/Views/#{name}/Index.cshtml"
+			puts use_bs_grid
+			if use_bs_grid
+				create_js_bs_grid_template model
+			end
+
+			save view_index_template(model, use_bs_grid), "#{@mvc_project_directory}/Views/#{name}/Index.cshtml"
 			add_cshtml_node name, "Index"
 		else
 			puts "View type is not valid."	
@@ -361,6 +368,14 @@ namespace :gen do
 		file_name = "#{name}Controller_spec"
 		save tests_controller_template(model), "#{@test_project}/#{file_name}.cs"
 		add_compile_node :root, file_name, proj_tests_file
+	end
+
+	def create_js_bs_grid_template model
+		name = model['name']
+		folder "Scripts/app"
+
+		save js_bs_grid_template(model), "#{@mvc_project_directory}/Scripts/app/#{name}.grid.js"
+		add_js_node "#{name}.grid"
 	end
 
 	#remove the following comments if you are not going to use sidekick
