@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0" DefaultTargets="Build">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -190,6 +190,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Content Include="Scripts\bs_grid\jquery.bs_grid.js" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -261,6 +262,17 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\bootstrapValidator.js" />
+    <Content Include="Scripts\bs_grid\bs_pagination\en.min.js" />
+    <Content Include="Scripts\bs_grid\bs_pagination\jquery.bs_pagination.min.css" />
+    <Content Include="Scripts\bs_grid\bs_pagination\jquery.bs_pagination.min.js" />
+    <Content Include="Scripts\bs_grid\en.min.js" />
+    <Content Include="Scripts\bs_grid\jquery-ui.min.css" />
+    <Content Include="Scripts\bs_grid\jquery-ui.min.js" />
+    <Content Include="Scripts\bs_grid\jquery.bs_grid.min.css" />
+    <Content Include="Scripts\bs_grid\jquery.bs_grid.min.js" />
+    <Content Include="Scripts\bs_grid\jui_filter\en.min.js" />
+    <Content Include="Scripts\bs_grid\jui_filter\jquery.jui_filter_rules.bs.min.css" />
+    <Content Include="Scripts\bs_grid\jui_filter\jquery.jui_filter_rules.min.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\jquery-1.9.1.min.map" />
