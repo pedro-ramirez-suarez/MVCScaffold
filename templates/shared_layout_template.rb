@@ -15,6 +15,10 @@ return <<template
     <link href="~/Content/bootstrap.css" rel="stylesheet" />
     <link href="~/Content/bootstrapValidator.css" rel="stylesheet" />
     <link href="~/Content/bootstrap-datetimepicker.css" rel="stylesheet" />
+    <link href="~/Content/jquery_ui/jquery-ui.min.css" rel="stylesheet" />
+    <link href="~/Content/bs_pagination/jquery.bs_pagination.min.css" rel="stylesheet" />
+    <link href="~/Content/jui_filter/jquery.jui_filter_rules.bs.min.css" rel="stylesheet" />
+    <link href="~/Content/bs_grid/jquery.bs_grid.min.css" rel="stylesheet" />
 
     <script src="~/Scripts/app/require.config.js"></script>
     <script src="~/Scripts/require.js"></script>

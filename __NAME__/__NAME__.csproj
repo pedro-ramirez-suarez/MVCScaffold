@@ -262,17 +262,17 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\bootstrapValidator.js" />
-    <Content Include="Scripts\bs_grid\bs_pagination\en.min.js" />
-    <Content Include="Scripts\bs_grid\bs_pagination\jquery.bs_pagination.min.css" />
-    <Content Include="Scripts\bs_grid\bs_pagination\jquery.bs_pagination.min.js" />
+    <Content Include="Scripts\bs_pagination\en.min.js" />
+    <Content Include="Content\bs_pagination\jquery.bs_pagination.min.css" />
+    <Content Include="Scripts\bs_pagination\jquery.bs_pagination.min.js" />
     <Content Include="Scripts\bs_grid\en.min.js" />
-    <Content Include="Scripts\bs_grid\jquery-ui.min.css" />
-    <Content Include="Scripts\bs_grid\jquery-ui.min.js" />
-    <Content Include="Scripts\bs_grid\jquery.bs_grid.min.css" />
+    <Content Include="Content\jquery_ui\jquery-ui.min.css" />
+    <Content Include="Scripts\jquery_ui\jquery-ui.min.js" />
+    <Content Include="Content\bs_grid\jquery.bs_grid.min.css" />
     <Content Include="Scripts\bs_grid\jquery.bs_grid.min.js" />
-    <Content Include="Scripts\bs_grid\jui_filter\en.min.js" />
-    <Content Include="Scripts\bs_grid\jui_filter\jquery.jui_filter_rules.bs.min.css" />
-    <Content Include="Scripts\bs_grid\jui_filter\jquery.jui_filter_rules.min.js" />
+    <Content Include="Scripts\jui_filter\en.min.js" />
+    <Content Include="Content\jui_filter\jquery.jui_filter_rules.bs.min.css" />
+    <Content Include="Scripts\jui_filter\jquery.jui_filter_rules.min.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\jquery-1.9.1.min.map" />
@@ -331,7 +331,6 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>2018</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

@@ -2,7 +2,7 @@ def js_bs_grid_template model
 	name = model['name']
 	name_downcase = name.downcase
 	return <<template
-define(['jquery', 'jqUi', 'bsPagination', 'bsPaginationLocation', 'juiFilter', 'juiFilterLocation', 'jqBsGrid', 'jqBsGridLocation'], function ($) {
+define(['jquery', 'bootstrap', 'jqUi', 'bsPagination', 'bsPaginationLocation', 'juiFilter', 'juiFilterLocation', 'jqBsGrid', 'jqBsGridLocation'], function ($) {
 
 $("#bs_grid_#{name_downcase}").bs_grid({
     pageNum: 1,
@@ -11,7 +11,7 @@ $("#bs_grid_#{name_downcase}").bs_grid({
     row_primary_key: "Id",
     rowSelectionMode: "single", 
     selected_ids: [],
-    ajaxFetchDataURL: "getall#{name_downcase}",
+    ajaxFetchDataURL: "#{name_downcase}/getall#{name_downcase}",
     
     #{get_grid_fields(model)}
 
@@ -25,6 +25,12 @@ $("#bs_grid_#{name_downcase}").bs_grid({
         disableTextSelectionInNavPane: true
     },
     useFilters: false,
+    filterOptions: {
+        filters: [
+            {
+            }
+        ]
+    }
 
 });
 });
