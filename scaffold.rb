@@ -62,7 +62,7 @@ namespace :gen do
  		primaryKeyType = main_model['primaryKeyType']
  		root_namespace = nkg_xml_model.xpath("//model").first['namespace']
  		entityNameSpace = main_model['namespace']
-		root_namespace = root_namespace == entityNameSpace ? '' : "using #{root_namespace};" 
+		root_namespace = (root_namespace.nil? || root_namespace == entityNameSpace) ? '' : "using #{root_namespace};" 
 
 		create_api_controller_template main_model, primaryKeyType, entityNameSpace, root_namespace
 
@@ -86,7 +86,7 @@ namespace :gen do
  		primaryKeyType = main_model['primaryKeyType']
 		root_namespace = nkg_xml_model.xpath("//model").first['namespace']
  		entityNameSpace = main_model['namespace']
-		root_namespace = root_namespace == entityNameSpace ? '' : "using #{root_namespace};" 
+		root_namespace = (root_namespace.nil? || root_namespace == entityNameSpace) ? '' : "using #{root_namespace};" 
 
 		create_controller_template main_model, primaryKeyType, entityNameSpace,root_namespace
 	end	
@@ -107,7 +107,7 @@ namespace :gen do
  		primaryKeyType = main_model['primaryKeyType']
  		root_namespace = nkg_xml_model.xpath("//model").first['namespace']
  		entityNameSpace = main_model['namespace']
-		root_namespace = root_namespace == entityNameSpace ? '' : "using #{root_namespace};" 
+		root_namespace = (root_namespace.nil? || root_namespace == entityNameSpace) ? '' : "using #{root_namespace};" 
 
 		create_repository_template name, primaryKeyType, entityNameSpace
 	end	
@@ -188,7 +188,7 @@ namespace :gen do
  		primaryKeyType = main_model['primaryKeyType']
  		root_namespace = nkg_xml_model.xpath("//model").first['namespace']
  		entityNameSpace = main_model['namespace']
-		root_namespace = root_namespace == entityNameSpace || root_namespace =='' || root_namespace.nil?  ? '' : "using #{root_namespace};" 
+		root_namespace = (root_namespace.nil? || root_namespace == entityNameSpace) || root_namespace =='' || root_namespace.nil?  ? '' : "using #{root_namespace};" 
 
 		create_repository_template name, primaryKeyType, entityNameSpace
 		
