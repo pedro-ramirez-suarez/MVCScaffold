@@ -149,6 +149,8 @@ namespace :gen do
 
 			save view_index_template(model, use_bs_grid), "#{@mvc_project_directory}/Views/#{name}/Index.cshtml"
 			add_cshtml_node name, "Index"
+
+			add_navigation_link name, "List #{name}"
 		else
 			puts "View type is not valid."	
 		end
@@ -326,9 +328,6 @@ namespace :gen do
 		folder "Views/Shared"
 		folder "Views/#{name}"
 
-		save view_shared_layout_template(name), "#{@mvc_project_directory}/Views/Shared/_Layout.cshtml"
-		add_cshtml_node "Shared", "_Layout"
-
 		save view_index_template(model), "#{@mvc_project_directory}/Views/#{name}/Index.cshtml"
 		add_cshtml_node name, "Index"
 
@@ -340,6 +339,8 @@ namespace :gen do
 
 		save view_edit_template(model), "#{@mvc_project_directory}/Views/#{name}/Edit.cshtml"
 		add_cshtml_node name, "Edit"
+
+		add_navigation_link name, "List #{name}"
 	end
 
 	def create_js_templates model
@@ -376,6 +377,24 @@ namespace :gen do
 
 		save js_bs_grid_template(model), "#{@mvc_project_directory}/Scripts/app/#{name}.grid.js"
 		add_js_node "#{name}.grid"
+	end
+
+
+	def add_navigation_link controller_name, display_name
+		source = "#{@mvc_project_directory}/Views/Shared/_Layout.cshtml"
+		html_file = File.open(source, "r")
+ 		
+ 		file = Nokogiri.HTML(html_file) do |config|
+ 			config.noblanks
+ 		end
+
+		file.xpath("//ul").first << "<li><a href='/#{controller_name}'>#{display_name}</a></li>"
+
+		File.open(source, "w") do |f| 
+			f.write(file)
+		end
+
+		html_file.close		
 	end
 
 	#remove the following comments if you are not going to use sidekick
