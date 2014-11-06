@@ -352,9 +352,6 @@ namespace :gen do
 
 		save js_model_validate_template(model), "#{@mvc_project_directory}/Scripts/app/#{name}.validate.js"
 		add_js_node "#{name}.validate"
-
-		save js_require_config_template, "#{@mvc_project_directory}/Scripts/app/require.config.js"
-		add_js_node "require.config"
 	end
 
 	def create_db_context_templates name

@@ -192,6 +192,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="Scripts\bs_grid\jquery.bs_grid.js" />
     <Compile Include="Startup.cs" />
+    <Content Include="Scripts\require.config.js" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-datetimepicker.css" />
