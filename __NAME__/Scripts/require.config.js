@@ -9,11 +9,11 @@
         utils: 'Utils',
         moment: 'moment',
         bootstrapDateTimePicker: 'bootstrap-datetimepicker',
-        bsPagination: "bs_grid/bs_pagination/jquery.bs_pagination.min",
-        bsPaginationLocation: "bs_grid/bs_pagination/en.min",
-        juiFilter: "bs_grid/jui_filter/jquery.jui_filter_rules.min",
-        juiFilterLocation: "bs_grid/jui_filter/en.min",
-        jqUi: "bs_grid/jquery-ui.min",
+        bsPagination: "bs_pagination/jquery.bs_pagination.min",
+        bsPaginationLocation: "bs_pagination/en.min",
+        juiFilter: "jui_filter/jquery.jui_filter_rules.min",
+        juiFilterLocation: "jui_filter/en.min",
+        jqUi: "jquery_ui/jquery-ui.min",
         jqBsGrid: "bs_grid/jquery.bs_grid.min",
         jqBsGridLocation: "bs_grid/en.min"
     }
