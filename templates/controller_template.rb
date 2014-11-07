@@ -31,7 +31,10 @@ namespace #{@solution_name_sans_extension}.Controllers
     //Basic Controller template, avoid adding bussiness logic code here, use the Repository instead
     public class #{name}Controller : Controller
     {
-        
+        public Dictionary<string, Func<#{name}, IComparable>> DynamicOrdering = new Dictionary<string, Func<#{name}, IComparable>>
+        {#{get_properties(model, 'dictionary')}
+        };
+
         #{get_repositories(model, 'declaration')}
 
         public #{name}Controller() {
@@ -136,36 +139,33 @@ namespace #{@solution_name_sans_extension}.Controllers
             var list = new List<dynamic>();
             var sortField = this.Request.Form["sorting[0][field]"];
             var sort = this.Request.Form["sorting[0][order]"];
-
-            var registers = #{name_downcase}Repository.GetAll().ToList();
-            var rows = registers.Skip((page_num - 1) * rows_per_page).Take(rows_per_page);
-
-            if (DynamicOrdering.ContainsKey(sortField))
-            {
-                rows = (sort == "descending") ? rows.OrderByDescending(DynamicOrdering[sortField]) : rows.OrderBy(DynamicOrdering[sortField]);
-            }
-
             
-            foreach (var row in rows)
+            var totalRows = #{name_downcase}Repository.ExecuteScalar<int>("SELECT Count(Id) FROM #{name_downcase}", new Dictionary<string, object>());
+            var registers = #{name_downcase}Repository.GetMany(
+                new {},
+                new {},
+                Needletail.DataAccess.Engines.FilterType.AND,
+                page_num - 1,
+                rows_per_page
+            );
+
+            registers = (sort == "descending") ?
+                registers.OrderByDescending(DynamicOrdering[sortField]) :
+                registers.OrderBy(DynamicOrdering[sortField]);
+
+            foreach (var row in registers)
             {
                 var objId = row.Id.ToString();
                 list.Add(new
-                {
-                    #{get_properties(model, 'object')},
+                {   #{get_properties(model, 'object')},
                     edit = string.Format("<a href = \\"/#{name_downcase}/edit/{0}\\">Edit</a>", objId),
                     details = string.Format("<a href = \\"/#{name_downcase}/Details/{0}\\">Details</a>", objId),
                     delete = string.Format("<a href = \\"/#{name_downcase}/delete/{0}\\">Delete</a>", objId)
                 });
             }
-
-            var result = Json(new { total_rows = registers.Count, page_data = list });
-            return result;
+ 
+            return Json(new { total_rows = totalRows, page_data = list });;
         }
-
-        public Dictionary<String, Func<#{name}, IComparable>> DynamicOrdering = new Dictionary<string, Func<#{name}, IComparable>>
-                                                                                         {
-                                                                                             #{get_properties(model, 'dictionary')}
-                                                                                         };
     }
 }
 template
@@ -234,7 +234,8 @@ def get_properties model, type
 
         case type
         when "dictionary"
-            fields += "{\"#{property_name}\",opt => opt.#{property_name}},"
+            fields += "
+            {\"#{property_name}\",opt => opt.#{property_name}},"
         when "object"
             fields += "
                     #{property_name} = row.#{property_name},"
