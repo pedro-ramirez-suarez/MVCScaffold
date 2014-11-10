@@ -4,7 +4,8 @@ entity_name = model['name']
 
 return <<template
 @{
-    ViewBag.Title = "Create";
+    ViewBag.page = "#{entity_name}";
+    ViewBag.Title = "#{entity_name} | Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 

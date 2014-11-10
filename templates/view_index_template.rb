@@ -7,7 +7,8 @@ def view_index_template model, use_bs_grid = false
 
 return <<template
 @{
-    ViewBag.Title = "Index";
+    ViewBag.page = "#{name}";
+    ViewBag.Title = "#{name} | List";
     Layout = "~/Views/Shared/_Layout.cshtml";
     
 }

@@ -4,7 +4,8 @@ entity_name = model['name']
 name_downcase = entity_name.downcase
 return <<template
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.page = "#{entity_name}";
+    ViewBag.Title = "#{entity_name} | Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 

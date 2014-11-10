@@ -5,7 +5,8 @@ def view_details_template model
 
 return <<template
 @{
-    ViewBag.Title = "Details";
+    ViewBag.page = "#{entity_name}";
+    ViewBag.Title = "#{entity_name} | Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 

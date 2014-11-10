@@ -1,7 +1,8 @@
 def view_delete_template name
 return <<template
 @{
-    ViewBag.Title = "Delete";
+    ViewBag.page = "#{name}";
+    ViewBag.Title = "#{name} | Delete";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 

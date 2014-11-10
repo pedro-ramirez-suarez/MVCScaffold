@@ -149,8 +149,6 @@ namespace :gen do
 
 			save view_index_template(model, use_bs_grid), "#{@mvc_project_directory}/Views/#{name}/Index.cshtml"
 			add_cshtml_node name, "Index"
-
-			add_navigation_link name, "List #{name}"
 		else
 			puts "View type is not valid."	
 		end
@@ -379,19 +377,16 @@ namespace :gen do
 
 	def add_navigation_link controller_name, display_name
 		source = "#{@mvc_project_directory}/Views/Shared/_Layout.cshtml"
-		html_file = File.open(source, "r")
+		file = File.open(source, "r")
  		
- 		file = Nokogiri.HTML(html_file) do |config|
- 			config.noblanks
- 		end
-
-		file.xpath("//ul").first << "<li><a href='/#{controller_name}'>#{display_name}</a></li>"
+ 		content =  file.read.to_s.gsub("</ul>", 
+ 			"<li @if (ViewBag.page == \"#{controller_name}\"){<text> class=\"active\"</text>;}><a href=\"/#{controller_name}\">#{display_name}</a></li>\n</ul>")
 
 		File.open(source, "w") do |f| 
-			f.write(file)
+			f.write(content)
 		end
 
-		html_file.close		
+		file.close		
 	end
 
 	#remove the following comments if you are not going to use sidekick
