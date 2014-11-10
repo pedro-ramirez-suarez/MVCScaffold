@@ -32,6 +32,9 @@ task :rake_dot_net_initialize do
 
   @sh = CommandShell.new
   @sln = SlnBuilder.new
+  @file_sync = FileSync.new
+  @file_sync.source = @mvc_project_directory
+  @file_sync.destination = @website_deploy_directory
   @sln.msbuild_path = "C:\\Program Files (x86)\\MSBuild\\12.0\\bin\\amd64\\msbuild.exe"
 end
 
@@ -57,6 +60,11 @@ end
 desc "start iis express for MVC app"
 task :server => :rake_dot_net_initialize do
   sh @iis_express.command @website_deploy_directory, @website_port
+end
+
+desc "synchronizes a file specfied to the website deployment directory"
+task :sync, [:file] => :rake_dot_net_initialize do |t, args|
+  @file_sync.sync args[:file]
 end
 
 desc "Show help"
