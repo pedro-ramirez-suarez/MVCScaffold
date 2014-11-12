@@ -189,6 +189,22 @@ def handle_webfile filename
   end
 end
 
+def handle_js_test filename
+  if(@dw.config[:builder] == :RakeBuilder && File.exists?("RakeDotNet"))  #make sure that the configuration is set to RakeBuilder and RakeDotNet is installed
+    failed = false #variable to determine if the test fail
+
+    output = @dw.sh.execute "rake jasmine:ci"  #run jasmine with phantomjs to run *spec.js tests
+    
+    failed = true if output =~ /Error/ #set failed equal to true if the sync failed
+
+    @dw.notifier.execute "tests pass", output.split("\n").last, "green" unless failed #growl
+
+    @dw.notifier.execute "tests failed", output, "red" if failed
+  else
+    puts "A web file was encountered, but it looks like you don't have rake-dot-net installed.  I would auto deploy if you did."
+  end
+end
+
 def tutorial
   @dw.notifier.execute "specwatchr", "feedback loop engaged", "green"
   puts "======================== SpecWatcher has started ==========================\n\n"
@@ -225,7 +241,11 @@ def file_changed full_path
   end
 
   if full_path =~ /(.*.cshtml)|(.*.js)|(.*.css)$/
-    handle_webfile full_path
+    if full_path =~ /(.*.Spec.js$)/
+      handle_js_test full_path
+    else
+      handle_webfile full_path
+    end
   end
 end
 
