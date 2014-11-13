@@ -199,7 +199,7 @@ def handle_js_test filename
 
     @dw.notifier.execute "tests pass", output.split("\n").last, "green" unless failed #growl
 
-    @dw.notifier.execute "tests failed", output, "red" if failed
+    @dw.notifier.execute "tests failed", output.split("\n")[5..-1].join("\n"), "red" if failed
   else
     puts "A web file was encountered, but it looks like you don't have rake-dot-net installed.  I would auto deploy if you did."
   end
