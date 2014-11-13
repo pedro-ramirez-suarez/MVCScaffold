@@ -96,7 +96,7 @@ spec_helper: spec/javascripts/support/jasmine_helper.rb
 #
 # boot_dir: spec/javascripts/support/boot
 #
-boot_dir:
+boot_dir: spec/javascripts/support
 
 # boot_files
 #
@@ -109,6 +109,9 @@ boot_dir:
 #   - '**/*.js'
 #
 boot_files:
+  - 'requirejs.js'
+  - 'requirejs.config.js'
+  - 'boot.js'
 
 # rack_options
 #
