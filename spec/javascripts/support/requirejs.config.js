@@ -1,5 +1,6 @@
-(function() {
-  var require = require || {baseUrl: '__NAME__/Scripts', paths: {
+var require = {
+    baseUrl: '__NAME__/Scripts', 
+    paths: {
         jquery: 'jquery-1.9.1',
         bootstrap: 'bootstrap',
         knockout: 'knockout-3.2.0',
@@ -15,9 +16,5 @@
         jqUi: "jquery_ui/jquery-ui.min",
         jqBsGrid: "bs_grid/jquery.bs_grid.min",
         jqBsGridLocation: "bs_grid/en.min"
-    } }
-
-  require.paths.jasmine = '../__jasmine__/jasmine';
-  require.paths.jasmine_html = '../__jasmine__/jasmine-html';
-
-})()
+    } 
+}

@@ -108,8 +108,8 @@ boot_dir: spec/javascripts/support
 #   - '**/*.js'
 #
 boot_files:
-  - 'requirejs.js'
   - 'requirejs.config.js'
+  - 'requirejs.js'
   - 'boot.js'
 
 # rack_options
