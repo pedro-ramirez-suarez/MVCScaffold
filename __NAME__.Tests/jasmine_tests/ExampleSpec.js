@@ -11,7 +11,8 @@
 
     describe("example", function () {
         it("should pass", function () {
-            expect("jasmine").toBe("Jasmine");
+            expect("jasmine").toBe("jasmine");
         });
     });
+
 });

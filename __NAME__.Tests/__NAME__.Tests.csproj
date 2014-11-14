@@ -93,6 +93,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="jasmine_tests\ExampleSpec.js" />
     <Content Include="specwatchr-usage.txt" />
   </ItemGroup>
   <ItemGroup>
