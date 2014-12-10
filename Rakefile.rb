@@ -75,7 +75,6 @@ task :help do
   sh "start help\\help.html"
 end
 
-
 desc "run nspec tests"
 task :tests => :build do
   puts "Could not find the NSpec test runner at location #{ @test_runner_path }, update your dev.yml to point to the correct runner location." if !File.exists? @test_runner_path
@@ -83,4 +82,9 @@ task :tests => :build do
   puts "if you have any failures, you can run 'rake stacktrace:tests' for a nice stacktrace visualization"
 
   sh @test_runner_command if File.exists? @test_runner_path
+end
+
+desc "run fuzz test using gremlins.js"
+task :gremlins do
+  sh "start http:\\localhost:3000\\user?gremlins=true"
 end

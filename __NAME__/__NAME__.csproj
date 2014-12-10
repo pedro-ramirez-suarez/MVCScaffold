@@ -192,6 +192,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="Scripts\bs_grid\jquery.bs_grid.js" />
     <Compile Include="Startup.cs" />
+    <Content Include="Scripts\gremlins.min.js" />
     <Content Include="Scripts\require.config.js" />
   </ItemGroup>
   <ItemGroup>
@@ -333,6 +334,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>2018</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

@@ -15,6 +15,7 @@
         juiFilterLocation: "jui_filter/en.min",
         jqUi: "jquery_ui/jquery-ui.min",
         jqBsGrid: "bs_grid/jquery.bs_grid.min",
-        jqBsGridLocation: "bs_grid/en.min"
+        jqBsGridLocation: "bs_grid/en.min",
+        gremlins: "gremlins.min"
     }
 };

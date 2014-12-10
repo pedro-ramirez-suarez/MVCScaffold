@@ -82,3 +82,14 @@
 
 </body>
 </html>
+
+@if (!Request.QueryString["gremlins"].IsNullOrWhiteSpace())
+{
+    <script type="text/javascript">
+        console.log("run gremlins");
+
+        require(['gremlins'], function (gremlins) {
+            gremlins.createHorde().unleash();
+        });
+    </script>
+}
