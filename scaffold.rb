@@ -154,7 +154,7 @@ namespace :gen do
 		end
 	end	
 
-	desc "Adds a new test controller file, example: rake gen:test[ User]"
+	desc "Adds a new test controller file, example: rake gen:test[User]"
 	task :test, [:model] => [:rake_dot_net_initialize, :create_xml_file] do |t, args|
 		raise "name parameter required, example: rake gen:test[User]" if args[:model].nil?
 		model_name = args[:model].capitalize

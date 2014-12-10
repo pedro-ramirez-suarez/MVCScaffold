@@ -84,7 +84,11 @@ task :tests => :build do
   sh @test_runner_command if File.exists? @test_runner_path
 end
 
-desc "run fuzz test using gremlins.js"
-task :gremlins do
-  sh "start http:\\localhost:3000\\user?gremlins=true"
+desc "run fuzz test using gremlins.js, optionally you can pass the next parameters: controller, view and id. rake gremlins[user,edit,5]"
+task :gremlins, :controller, :view, :id do |t, args|
+  controller = args[:controller] || "home"
+  view = args[:view] ? "\\#{args[:view]}" : ""
+  id = args[:id] ? "\\#{args[:id]}" : ""
+
+  sh "start http:\\localhost:3000\\#{controller + view + id}?gremlins=true"
 end

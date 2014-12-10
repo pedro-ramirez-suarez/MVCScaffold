@@ -87,10 +87,32 @@
 @if (!Request.QueryString["gremlins"].IsNullOrWhiteSpace())
 {
     <script type="text/javascript">
-        console.log("run gremlins");
-
         require(['gremlins'], function (gremlins) {
-            gremlins.createHorde().unleash();
+            gremlins.createHorde()
+			.gremlin(gremlins.species.clicker())
+			.gremlin(gremlins.species.formFiller())
+			.gremlin(gremlins.species.scroller())
+			.mogwai(gremlins.mogwais.gizmo())
+			.mogwai(gremlins.mogwais.fps())
+			.strategy(gremlins.strategies.distribution()
+				.delay(50)
+				.distribution([
+					0.3, // clicker
+					0.3, // formFiller
+					0.1, // scroller
+				])
+			)
+			.before(function (done) {
+			    var horde = this;
+			    setTimeout(function () {
+			        horde.log('async');
+			        done();
+			    }, 1000);
+			})
+			.after(function () {
+			    this.log('sync');
+			})
+			.unleash({ nb: 200 });
         });
     </script>
 }
