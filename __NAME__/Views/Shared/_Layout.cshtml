@@ -51,14 +51,14 @@
 
                 </button>
 
-                <a class="navbar-brand" href="#">Project name</a>
+                <a class="navbar-brand" href="/">Project name</a>
 
             </div>
 
             <div class="collapse navbar-collapse">
 
                 <ul class="nav navbar-nav">
-                    <li @if (ViewBag.page == "Home") { <text> class=" active" </text> ; }><a href="#">Home</a></li>
+                    <li @if (ViewBag.page == "Home") { <text> class=" active" </text> ; }><a href="/">Home</a></li>
                 </ul>
             </div>
             <!--/.nav-collapse -->
@@ -84,25 +84,18 @@
 </body>
 </html>
 
-@if (!Request.QueryString["gremlins"].IsNullOrWhiteSpace())
+@*Gremlins configuration, only runs when a query string is set "<path>?gremlins=true"
+    used for fuzz testing*@
+@if (!Request.QueryString["gremlins"].IsNullOrWhiteSpace() || Request.Cookies["gremlins"] != null)
 {
     <script type="text/javascript">
         require(['gremlins'], function (gremlins) {
             gremlins.createHorde()
-			.gremlin(gremlins.species.clicker())
-			.gremlin(gremlins.species.formFiller())
-			.gremlin(gremlins.species.scroller())
-			.mogwai(gremlins.mogwais.gizmo())
-			.mogwai(gremlins.mogwais.fps())
-			.strategy(gremlins.strategies.distribution()
-				.delay(50)
-				.distribution([
-					0.3, // clicker
-					0.3, // formFiller
-					0.1, // scroller
-				])
-			)
+            .gremlin(gremlins.species.formFiller())
+            .gremlin(gremlins.species.clicker())
+            .gremlin(gremlins.species.scroller())
 			.before(function (done) {
+			    document.cookie = "gremlins=true";
 			    var horde = this;
 			    setTimeout(function () {
 			        horde.log('async');
@@ -110,9 +103,14 @@
 			    }, 1000);
 			})
 			.after(function () {
+			    document.cookie = "gremlins=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
 			    this.log('sync');
 			})
-			.unleash({ nb: 200 });
+            .strategy(gremlins.strategies.distribution()
+              .delay(50) // wait 50 ms between each action
+              .distribution([0.3, 0.3, 0.1]) // the first three gremlins have more chances to be executed than the last
+            )
+			.unleash({ nb: 500 });
         });
     </script>
 }
