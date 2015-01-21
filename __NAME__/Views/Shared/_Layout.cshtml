@@ -112,5 +112,13 @@
             )
 			.unleash({ nb: 500 });
         });
+
+        //change all anchors to add the gremlins query string this way the testing continues
+        var querystring = 'gremlins=true';
+        $('a').each(function () {
+            var href = $(this).attr('href');
+            href += (href.match(/\?/) ? '&' : '?') + querystring;
+            $(this).attr('href', href);
+        });
     </script>
 }
