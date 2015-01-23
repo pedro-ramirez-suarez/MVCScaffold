@@ -4,9 +4,17 @@
         return result;
     };
 
-    Utils = {        
-      formatDate: formatDate
+    var utils = {        
+      formatDate: formatDate,
+      makeAjaxCall: function (url, data) {
+            return $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: data
+            });
+      }
     };
 
-    return Utils;
+    return utils;
 });

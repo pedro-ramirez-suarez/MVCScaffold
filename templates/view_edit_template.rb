@@ -1,7 +1,9 @@
 def view_edit_template model
 fields = get_fields_edit model
 entity_name = model['name']
-name_downcase = entity_name.downcase
+name = entity_name
+name_downcase = name.downcase
+
 return <<template
 @{
     ViewBag.page = "#{entity_name}";
@@ -26,11 +28,14 @@ return <<template
 </form>
 
 <script>
-    require(["/Scripts/app/#{model['name']}.binding.js", "/Scripts/app/#{model['name']}.validate.js", "moment"], function (modelBinding, modelValidate, moment) {
-        var model = JSON.parse('@Html.Raw(ViewBag.#{model['name']})');
-        #{format_properties(model, 'create_edit')}  
-        modelBinding.add(model);
-        modelValidate.initViewModel(modelBinding);
+    require(["/Scripts/app/#{name}.controller.js", "/Scripts/app/#{name}.binding.js", "/Scripts/app/#{name}.validate.js"], function (#{name_downcase}Controller, appViewModel, modelValidate) {
+        var promise = #{name_downcase}Controller.get#{name}("@ViewBag.id");
+        promise.done(function (ajaxResult) {
+            var model = ajaxResult.#{name_downcase};
+            #{format_properties(model, 'create_edit')}  
+            appViewModel.add(model);
+            modelValidate.initViewModel(appViewModel);
+        });
     });
 </script>
 template

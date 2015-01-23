@@ -350,6 +350,9 @@ namespace :gen do
 
 		save js_model_validate_template(model), "#{@mvc_project_directory}/Scripts/app/#{name}.validate.js"
 		add_js_node "#{name}.validate"
+
+		save js_controller_template(model), "#{@mvc_project_directory}/Scripts/app/#{name}.controller.js"
+		add_js_node "#{name}.controller"
 	end
 
 	def create_db_context_templates name

@@ -22,12 +22,15 @@ return <<template
 <a href="/#{name}/Create" class="btn btn-primary">Add</a>
     
 <script>
-    require(["/Scripts/app/#{name}.binding.js", 'underscore', 'moment' #{grid_file if use_bs_grid}], function (modelBinding, _, moment) {
-        var model = JSON.parse('@Html.Raw(ViewBag.#{name}s)');
-            
-        _.each(model, function(item) {
-            #{format_properties(model, 'index')}
-            modelBinding.add(item);
+    require(["/Scripts/app/#{name}.controller.js", "/Scripts/app/#{name}.binding.js", 'moment' #{grid_file if use_bs_grid}], function (#{name_downcase}Controller, appViewModel, moment) {
+        var promise = #{name_downcase}Controller.get#{name}s();
+
+        promise.done(function (ajaxResult) {
+            _.each(ajaxResult.#{name_downcase}s, function (item) {
+                var model = ajaxResult.#{name_downcase}s;
+                #{format_properties(model, 'index')}
+                appViewModel.add(item);
+            });
         });
     });
 </script>

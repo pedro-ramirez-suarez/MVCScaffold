@@ -2,6 +2,8 @@ def view_details_template model
     labels = get_labels model, model.at_xpath("fields").elements
     labels += get_has_many_labels model
     entity_name = model['name']
+    name = entity_name
+    name_downcase = name.downcase
 
 return <<template
 @{
@@ -32,10 +34,14 @@ return <<template
 </div>
 
 <script>
-    require(["/Scripts/app/#{model['name']}.binding.js", "moment"], function (modelBinding, moment) {
-        var model = JSON.parse('@Html.Raw(ViewBag.#{entity_name})');
-        #{format_properties(model)}        
-        modelBinding.add(model);
+    require(["/Scripts/app/#{name}.controller.js", "/Scripts/app/#{name}.binding.js"], function (#{name_downcase}Controller, appViewModel) {
+        var promise = #{name_downcase}Controller.get#{name}("@ViewBag.id");
+
+        promise.done(function (ajaxResult) {
+            var model = ajaxResult.#{name_downcase};
+            #{format_properties(model)}
+            appViewModel.add(model);
+        });
     });
 </script>
 

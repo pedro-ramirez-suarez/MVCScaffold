@@ -48,9 +48,6 @@ namespace #{@solution_name_sans_extension}.Controllers
 
         public ActionResult Index()
         {
-            var #{name_downcase}s = #{name_downcase}Repository.GetAll();
-            ViewBag.#{name}s = new JavaScriptSerializer().Serialize(#{name_downcase}s);
-            
             return View();
         }
 
@@ -59,9 +56,7 @@ namespace #{@solution_name_sans_extension}.Controllers
 
         public ActionResult Details(#{keytype} id)
         {
-            #{(get_repositories(model, 'use') if useRepositories)}
-            #{init_view_model(model)}
-            
+            ViewBag.id = id;
             return View();
         }
 
@@ -100,10 +95,7 @@ namespace #{@solution_name_sans_extension}.Controllers
 
         public ActionResult Edit(#{keytype} id)
         {
-            #{(useRepositories ? "var #{name_downcase} = #{name_downcase}Repository.GetSingle(where: new { Id = id });
-                ViewBag.#{name} = new JavaScriptSerializer().Serialize(#{name_downcase});" : "var viewModel = new #{name}ViewModel();
-                viewModel.FillData(primaryKey: id);
-                ViewBag.#{name} = new JavaScriptSerializer().Serialize(viewModel);")}
+            ViewBag.id = id;
             return View();
         }
 
@@ -128,9 +120,40 @@ namespace #{@solution_name_sans_extension}.Controllers
         [HttpPost, ActionName("Delete")]
         public bool Delete(#{keytype} id)
         {
-
             var result = #{name_downcase}Repository.Delete(where: new {Id = id});
             return result;
+        }
+
+        #region
+
+        [HttpPost]
+        public JsonResult Get#{name}s()
+        {
+            var #{name_downcase}s = #{name_downcase}Repository.GetAll();
+
+            var result = new {
+                #{name_downcase}s = #{name_downcase}s
+            };
+
+            return Json(result);
+        }
+
+        [HttpPost]
+        public JsonResult Get#{name}(Guid id)
+        {
+            var #{name_downcase} = #{name_downcase}Repository.GetSingle(where: new { Id = id });
+
+            if (#{name_downcase} == null)
+            {
+                #{name_downcase} = new #{name}();
+            }
+
+            var result = new
+            {
+                #{name_downcase} = #{name_downcase}
+            };
+
+            return Json(result);
         }
 
         [HttpPost]
@@ -166,6 +189,8 @@ namespace #{@solution_name_sans_extension}.Controllers
  
             return Json(new { total_rows = totalRows, page_data = list });;
         }
+
+        #endregion
     }
 }
 template
