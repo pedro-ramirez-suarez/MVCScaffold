@@ -1,6 +1,8 @@
 def view_create_template model
 fields = get_fields model
 entity_name = model['name']
+name = entity_name
+name_downcase = name.downcase
 
 return <<template
 @{
@@ -24,12 +26,15 @@ return <<template
     </div>
 </form>
 <script>
-    require(["/Scripts/app/#{model['name']}.binding.js", "/Scripts/app/#{model['name']}.validate.js", "moment"], function (appViewModel, formValidator, moment) {
-        var model = JSON.parse('@Html.Raw(ViewBag.#{model['name']})');
-        #{format_properties(model, 'create_edit')}  
-        appViewModel.add(model);
-        formValidator.initViewModel(appViewModel);
-        formValidator.initValidator();
+    require(["/Scripts/app/#{name}.controller.js", "/Scripts/app/#{name}.binding.js", "/Scripts/app/#{name}.validate.js"], function (#{name_downcase}Controller, appViewModel, formValidator) {
+        var promise = #{name_downcase}Controller.get#{name}("00000000-0000-0000-0000-000000000000");
+        promise.done(function (ajaxResult) {
+            var model = ajaxResult.#{name_downcase};
+            #{format_properties(model, 'create_edit')}
+            appViewModel.add(model);
+            formValidator.initViewModel(appViewModel);
+            formValidator.initValidator();
+        });
     });
 </script>
 template

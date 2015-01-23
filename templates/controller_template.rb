@@ -194,17 +194,19 @@ end
 
 def get_repositories model, action
     repositories = ""
-
     entity_name = model['name']
+    entity_name_downcase = entity_name.downcase
+
     if action == "declaration"
         repositories += "
         #{entity_name}Repository #{entity_name.downcase}Repository;"    
     elsif action == "init"
         repositories += "
-        #{entity_name.downcase}Repository = new #{entity_name}Repository();"
+        #{entity_name_downcase}Repository = new #{entity_name}Repository();"
     elsif action == "use"
             repositories += "
-        var #{entity_name} = #{entity_name.downcase}Repository.GetSingle(where: new {Id = id});"        
+        var #{entity_name_downcase} = #{entity_name.downcase}Repository.GetSingle(where: new {Id = id});
+        #{name_downcase} = #{name_downcase} ?? new #{name}();"        
     end 
         
     repositories
@@ -213,6 +215,7 @@ end
 
 def init_view_model model
     name = model['name']
+    name_downcase = name.downcase
     result = ""
 
     if model.xpath("//entity").length > 1
