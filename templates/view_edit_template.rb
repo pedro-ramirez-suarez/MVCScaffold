@@ -28,13 +28,14 @@ return <<template
 </form>
 
 <script>
-    require(["/Scripts/app/#{name}.controller.js", "/Scripts/app/#{name}.binding.js", "/Scripts/app/#{name}.validate.js"], function (#{name_downcase}Controller, appViewModel, modelValidate) {
+    require(["/Scripts/app/#{name}.controller.js", "/Scripts/app/#{name}.binding.js", "/Scripts/app/#{name}.validate.js"], function (#{name_downcase}Controller, appViewModel, formValidator) {
         var promise = #{name_downcase}Controller.get#{name}("@ViewBag.id");
         promise.done(function (ajaxResult) {
             var model = ajaxResult.#{name_downcase};
             #{format_properties(model, 'create_edit')}  
             appViewModel.add(model);
-            modelValidate.initViewModel(appViewModel);
+            formValidator.initViewModel(appViewModel);
+            formValidator.initValidator();
         });
     });
 </script>

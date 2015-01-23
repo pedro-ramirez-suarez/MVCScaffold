@@ -24,11 +24,12 @@ return <<template
     </div>
 </form>
 <script>
-    require(["/Scripts/app/#{model['name']}.binding.js", "/Scripts/app/#{model['name']}.validate.js", "moment"], function (modelBinding, modelValidate, moment) {
+    require(["/Scripts/app/#{model['name']}.binding.js", "/Scripts/app/#{model['name']}.validate.js", "moment"], function (appViewModel, formValidator, moment) {
         var model = JSON.parse('@Html.Raw(ViewBag.#{model['name']})');
         #{format_properties(model, 'create_edit')}  
-        modelBinding.add(model);
-        modelValidate.initViewModel(modelBinding);
+        appViewModel.add(model);
+        formValidator.initViewModel(appViewModel);
+        formValidator.initValidator();
     });
 </script>
 template

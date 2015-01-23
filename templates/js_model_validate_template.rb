@@ -50,11 +50,13 @@ define(['jquery', 'bootstrapValidator', 'moment', 'bootstrapDateTimePicker'], fu
 
     #{get_datepicker_template model, 'validate_change'}
     
-    $(document).ready(function () {
-        initValidator();
-    });
+    var formValidator = {        
+        initViewModel: initViewModel,
+        initValidator: initValidator
+    };
+    
 
-    return { initViewModel: initViewModel };
+    return formValidator;
 });
 template
 end
