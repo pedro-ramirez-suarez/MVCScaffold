@@ -124,7 +124,7 @@ namespace #{@solution_name_sans_extension}.Controllers
             return result;
         }
 
-        #region
+        #region #{name_downcase} data access
 
         [HttpPost]
         public JsonResult Get#{name}s()
@@ -141,12 +141,8 @@ namespace #{@solution_name_sans_extension}.Controllers
         [HttpPost]
         public JsonResult Get#{name}(Guid id)
         {
-            var #{name_downcase} = #{name_downcase}Repository.GetSingle(where: new { Id = id });
-
-            if (#{name_downcase} == null)
-            {
-                #{name_downcase} = new #{name}();
-            }
+            #{(get_repositories(model, 'use') if useRepositories)}
+            #{init_view_model(model)}
 
             var result = new
             {
@@ -217,17 +213,15 @@ end
 
 def init_view_model model
     name = model['name']
-    view_bag = "ViewBag.#{name} = new JavaScriptSerializer().Serialize(#{name});"
-
+    result = ""
 
     if model.xpath("//entity").length > 1
-        view_bag = "
-            var viewModel = new #{name}ViewModel();
-            viewModel.FillData(primaryKey: id);
-            ViewBag.#{name} = new JavaScriptSerializer().Serialize(viewModel);"
+        result = "
+            var #{name_downcase} = new #{name}ViewModel();
+            #{name_downcase}.FillData(primaryKey: id);"
     end
 
-    view_bag
+    result
 end
 
 def get_has_ones model
