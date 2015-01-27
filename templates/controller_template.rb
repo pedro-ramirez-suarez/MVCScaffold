@@ -206,7 +206,7 @@ def get_repositories model, action
     elsif action == "use"
             repositories += "
         var #{entity_name_downcase} = #{entity_name.downcase}Repository.GetSingle(where: new {Id = id});
-        #{name_downcase} = #{name_downcase} ?? new #{name}();"        
+        #{entity_name_downcase} = #{entity_name_downcase} ?? new #{entity_name}();"        
     end 
         
     repositories
