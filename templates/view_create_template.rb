@@ -26,7 +26,8 @@ return <<template
     </div>
 </form>
 <script>
-    require(["/Scripts/app/#{name}.controller.js", "/Scripts/app/#{name}.binding.js", "/Scripts/app/#{name}.validate.js"], function (#{name_downcase}Controller, appViewModel, formValidator) {
+    require(["/Scripts/app/#{name}.controller.js", "/Scripts/app/#{name}.binding.js", "/Scripts/app/#{name}.validate.js", 'utils'], function (#{name_downcase}Controller, appViewModel, formValidator, utils) {
+        utils.spinner.show();
         var promise = #{name_downcase}Controller.get#{name}("00000000-0000-0000-0000-000000000000");
         promise.done(function (ajaxResult) {
             var model = ajaxResult.#{name_downcase};
@@ -35,6 +36,8 @@ return <<template
             formValidator.initViewModel(appViewModel);
             formValidator.initValidator();
         });
+
+        utils.spinner.hide();
     });
 </script>
 template

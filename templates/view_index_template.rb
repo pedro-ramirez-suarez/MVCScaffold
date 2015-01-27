@@ -22,7 +22,8 @@ return <<template
 <a href="/#{name}/Create" class="btn btn-primary">Add</a>
     
 <script>
-    require(["/Scripts/app/#{name}.controller.js", "/Scripts/app/#{name}.binding.js", 'moment' #{grid_file if use_bs_grid}], function (#{name_downcase}Controller, appViewModel, moment) {
+    require(["/Scripts/app/#{name}.controller.js", "/Scripts/app/#{name}.binding.js", 'moment', 'utils' #{grid_file if use_bs_grid}], function (#{name_downcase}Controller, appViewModel, moment, utils) {
+        utils.spinner.show();
         var promise = #{name_downcase}Controller.get#{name}s();
 
         promise.done(function (ajaxResult) {
@@ -31,6 +32,8 @@ return <<template
                 #{format_properties(model, 'index')}
                 appViewModel.add(item);
             });
+
+            utils.spinner.hide();
         });
     });
 </script>

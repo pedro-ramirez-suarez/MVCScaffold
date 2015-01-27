@@ -6,15 +6,15 @@
     
     //Add spinner configuration
     var opts = {
-        lines: 10, // The number of lines to draw
-        length: 7, // The length of each line
-        width: 4, // The line thickness
-        radius: 10, // The radius of the inner circle
+        lines: 11, // The number of lines to draw
+        length: 0, // The length of each line
+        width: 20, // The line thickness
+        radius: 20, // The radius of the inner circle
         corners: 1, // Corner roundness (0..1)
         rotate: 0, // The rotation offset
         color: '#000', // #rgb or #rrggbb
-        speed: 1, // Rounds per second
-        trail: 60, // Afterglow percentage
+        speed: 2, // Rounds per second
+        trail: 40, // Afterglow percentage
         shadow: false, // Whether to render a shadow
         hwaccel: false, // Whether to use hardware acceleration
         className: 'spinner', // The CSS class to assign to the spinner

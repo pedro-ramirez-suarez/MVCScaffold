@@ -34,13 +34,16 @@ return <<template
 </div>
 
 <script>
-    require(["/Scripts/app/#{name}.controller.js", "/Scripts/app/#{name}.binding.js"], function (#{name_downcase}Controller, appViewModel) {
+    require(["/Scripts/app/#{name}.controller.js", "/Scripts/app/#{name}.binding.js", 'utils'], function (#{name_downcase}Controller, appViewModel, utils) {
+        utils.spinner.show();
         var promise = #{name_downcase}Controller.get#{name}("@ViewBag.id");
 
         promise.done(function (ajaxResult) {
             var model = ajaxResult.#{name_downcase};
             #{format_properties(model)}
             appViewModel.add(model);
+
+            utils.spinner.hide();
         });
     });
 </script>
