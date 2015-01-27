@@ -16,6 +16,7 @@
         jqUi: "jquery_ui/jquery-ui.min",
         jqBsGrid: "bs_grid/jquery.bs_grid.min",
         jqBsGridLocation: "bs_grid/en.min",
-        gremlins: "gremlins.min"
+        gremlins: "gremlins.min",
+        spinjs: "spinjs"
     }
 };

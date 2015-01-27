@@ -15,3 +15,9 @@ select,
 textarea {
     max-width: 280px;
 }
+
+
+.spinjs {
+    position: absolute;
+    margin: 30% 50%;
+}
