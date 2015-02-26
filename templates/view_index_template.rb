@@ -22,7 +22,7 @@ return <<template
 <a href="/#{name}/Create" class="btn btn-primary">Add</a>
     
 <script>
-    require(["/Scripts/app/#{name}.controller.js", "/Scripts/app/#{name}.binding.js", 'moment', 'utils' #{grid_file if use_bs_grid}], function (#{name_downcase}Controller, appViewModel, moment, utils) {
+    require(["/Scripts/app/#{name}.controller.js", "/Scripts/app/#{name}.binding.js", 'moment', 'utils', 'underscore' #{grid_file if use_bs_grid}], function (#{name_downcase}Controller, appViewModel, moment, utils, _) {
         utils.spinner.show();
         var promise = #{name_downcase}Controller.get#{name}s();
 
