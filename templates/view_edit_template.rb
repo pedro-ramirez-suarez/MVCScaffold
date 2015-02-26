@@ -60,7 +60,7 @@ def get_fields_edit model
         if property_name.to_s == "Id"
             fields += @form_fields[:hidden] %[property_name, "data-bind='value: #{entity_name}#{property_name}'"]
         elsif node.at_css("SelectFrom")
-            fields += get_selectfrom_template model, 'edit_create'
+            fields += get_selectfrom_template model, 'edit_create', node.attribute('SelectFrom')
         elsif node.at_css("HasOne")
             reference = node.attribute('HasOne')
             nkg_obj = node.xpath("//entity")

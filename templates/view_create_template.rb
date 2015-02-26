@@ -57,7 +57,7 @@ def get_fields model
         next if property_name.to_s == "Id"
 
         if node.at_css("SelectFrom")
-            fields += get_selectfrom_template model, 'edit_create'
+            fields += get_selectfrom_template model, 'edit_create', node.attribute('SelectFrom')
         elsif node.at_css("HasOne")
             next
         elsif node.attribute('validator').to_s == "date"

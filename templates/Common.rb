@@ -22,28 +22,33 @@ def format_properties model, file_type = ""
     result
 end
 
-def get_selectfrom_template model, file_type
+def get_selectfrom_template model, file_type, field_name
     result = ""
     select_name = ""
     property_name = ""
     list_name = ""
     display_field = ""
     entity_name = model['name']
-
+    found = false
     return result if model.search("SelectFrom").empty?
 
     model.search("//SelectFrom/entity").each do |node|
-        select_name = node.attribute('name')
-        list_name = node.attribute('listName')
+        list_name = node.attribute('listName')        
 
+        if list_name.to_s != field_name.to_s
+            next
+        end
+        select_name = node.attribute('name')
+                       
         model.search("SelectFrom").each do |node|
             if node.parent.attribute('SelectFrom').to_s == list_name.to_s
                 display_field = node.attribute('DisplayField')
                 property_name = node.parent.name
+                break #we already have it
             end
         end
     end    
-
+    list_name = field_name
 
     case file_type
     when 'binding_init'
@@ -59,6 +64,7 @@ def get_selectfrom_template model, file_type
     when 'validate_init'
         result = "viewModel.#{entity_name}s()[0].#{entity_name}.#{property_name} = viewModel.selected#{select_name} ? viewModel.selected#{select_name}.Id : '';"
     when 'edit_create'
+        #puts "name #{select_name} property #{property_name} list name #{list_name} display #{display_field} select name #{select_name}"
         result = @form_fields[:select_from] %[select_name, property_name, list_name, display_field, select_name]
     end
 
