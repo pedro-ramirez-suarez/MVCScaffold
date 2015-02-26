@@ -55,14 +55,41 @@ def get_selectfrom_template model, file_type, field_name
         result = ",
         selected#{select_name}: ko.observable()"
     when 'binding_search'
-    result = "that.selected#{select_name} = {};
-            _.each(element.#{list_name}, function (item) {
-                if (item.Id === element.#{entity_name}.#{property_name}) {
-                    that.selected#{select_name} = item;
-                }
-            });"
+        model.search("//SelectFrom/entity").each do |node|
+            list_name = node.attribute('listName')        
+            select_name = node.attribute('name')
+                           
+            model.search("SelectFrom").each do |node|
+                if node.parent.attribute('SelectFrom').to_s == list_name.to_s
+                    display_field = node.attribute('DisplayField')
+                    property_name = node.parent.name
+
+                    result += "that.selected#{select_name} = {};
+                            _.each(element.#{list_name}, function (item) {
+                                if (item.Id === element.#{entity_name}.#{property_name}) {
+                                    that.selected#{select_name} = item;
+                                }
+                            });\n"
+                    break #we already have it
+                end
+            end
+        end 
     when 'validate_init'
-        result = "viewModel.#{entity_name}s()[0].#{entity_name}.#{property_name} = viewModel.selected#{select_name} ? viewModel.selected#{select_name}.Id : '';"
+
+        model.search("//SelectFrom/entity").each do |node|
+            list_name = node.attribute('listName')        
+            select_name = node.attribute('name')
+                           
+            model.search("SelectFrom").each do |node|
+                if node.parent.attribute('SelectFrom').to_s == list_name.to_s
+                    display_field = node.attribute('DisplayField')
+                    property_name = node.parent.name
+
+                    result += "viewModel.#{entity_name}s()[0].#{entity_name}.#{property_name} = viewModel.selected#{select_name} ? viewModel.selected#{select_name}.Id : '';\n"
+                    break #we already have it
+                end
+            end
+        end 
     when 'edit_create'
         #puts "name #{select_name} property #{property_name} list name #{list_name} display #{display_field} select name #{select_name}"
         result = @form_fields[:select_from] %[select_name, property_name, list_name, display_field, select_name]
