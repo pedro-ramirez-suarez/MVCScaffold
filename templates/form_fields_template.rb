@@ -48,3 +48,11 @@
                         </div>
                     </div>
                     "
+@form_fields[:checkbox] = "
+                    <div class='form-group'>
+                        <label class='col-sm-2 control-label'>%s</label>
+                        <div class='col-sm-4'>
+                            <input type='checkbox'  name='%s' %s/>
+                        </div>
+                    </div>
+                    "

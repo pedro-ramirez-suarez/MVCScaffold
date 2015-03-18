@@ -55,11 +55,15 @@ def get_fields model
     elements.each do |node|    
         property_name = node.name
         next if property_name.to_s == "Id"
+        #Skip hidden fields
+        next if node.attribute('validator').to_s["hidden"]
 
         if node.at_css("SelectFrom")
             fields += get_selectfrom_template model, 'edit_create', node.attribute('SelectFrom')
         elsif node.at_css("HasOne")
             next
+        elsif node.attribute('validator').to_s["bool"]
+                fields += @form_fields[:checkbox] %[property_name, property_name, "data-bind='checked: #{entity_name}#{property_name}'"]
         elsif node.attribute('validator').to_s == "date"
             fields += get_datepicker_template(model, 'edit_create')
         else

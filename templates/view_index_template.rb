@@ -49,7 +49,7 @@ def get_labels_index model
         name = node.name.to_s
         next if (node.name.to_s == "Id" || node.has_attribute?("SelectFrom") || 
             node.has_attribute?("HasOne")) || node.xpath("@validator='date'") ||
-            (name[(name.length() -2)...name.length] == "Id")
+            (name[(name.length() -2)...name.length] == "Id" || node.attribute('validator').to_s["hidden"])
 
         property_name = node.name
         labels += "
@@ -69,7 +69,7 @@ def get_columns_names model
         name = node.name.to_s
         next if (node.name.to_s == "Id" || node.has_attribute?("SelectFrom") || 
             node.has_attribute?("HasOne")) || node.xpath("@validator='date'") ||
-            (name[(name.length() -2)...name.length] == "Id")
+            (name[(name.length() -2)...name.length] == "Id" || node.attribute('validator').to_s["hidden"])
 
         property_name = node.name
         labels += "

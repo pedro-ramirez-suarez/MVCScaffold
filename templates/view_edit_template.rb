@@ -57,8 +57,13 @@ def get_fields_edit model
     elements.each do |node|    
         property_name = node.name
 
-        if property_name.to_s == "Id"
+        #do not show hidden fields
+        if node.attribute('validator').to_s["hidden"]
             fields += @form_fields[:hidden] %[property_name, "data-bind='value: #{entity_name}#{property_name}'"]
+        elsif property_name.to_s == "Id"
+            fields += @form_fields[:hidden] %[property_name, "data-bind='value: #{entity_name}#{property_name}'"]
+        elsif node.attribute('validator').to_s["bool"]
+                fields += @form_fields[:checkbox] %[property_name, property_name, "data-bind='checked: #{entity_name}#{property_name}'"]
         elsif node.at_css("SelectFrom")
             fields += get_selectfrom_template model, 'edit_create', node.attribute('SelectFrom')
         elsif node.at_css("HasOne")

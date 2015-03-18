@@ -64,6 +64,8 @@ def get_labels entity, elements
 
     elements.each do |node|    
         next if node.name.to_s == "Id"
+        #Skip hidden fields
+        next if node.attribute('validator').to_s["hidden"]
 
         property_name = node.name
 
