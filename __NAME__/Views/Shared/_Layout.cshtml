@@ -56,7 +56,24 @@
                     <ul class="nav navbar-nav">
                         <li @if (ViewBag.page == "Home") { <text> class=" active" </text>   ; }><a href="/">Home</a></li>
                     </ul>
+                    @if (Request.IsAuthenticated)
+                    {
+                        using (Html.BeginForm("LogOff", "SignOn", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <ul class="nav navbar-nav navbar-right">
+                                <li><a href="javascript:document.getElementById('logoutForm').submit()">Log out</a></li>
+                            </ul>
+                        }
+                    }
+                    else
+                    {
+                        <ul class="nav navbar-nav navbar-right">
+                            <li>@Html.ActionLink("SignUp", "Create", "Crmuser", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+                        </ul>
+                    }
                 </div>
+                
                 <!--/.nav-collapse -->
             </div>
         </div>
