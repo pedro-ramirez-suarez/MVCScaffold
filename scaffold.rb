@@ -20,7 +20,7 @@ namespace :gen do
 	desc "creates an xml file from a dll model, example: rake gen:new_xml_file[User]"
 	task :create_xml_file, [:model] => :rake_dot_net_initialize do |t, args|
 		raise "name parameter required, example: rake gen:api[User]" if args[:model].nil?
-		model_name = args[:model].capitalize
+		model_name = args[:model]
 		file_name = model_name.ext("xml")
 
 		system("XmlGenerator/Generator.exe Views #{model_name} #{@mvc_project_directory}")
@@ -29,7 +29,7 @@ namespace :gen do
 	desc "Adds a new model from an xml, example: rake gen:model[User]"
 	task :model, [:model] => [:rake_dot_net_initialize] do |t, args|
 		raise "name parameter required, example: rake gen:model[User]" if args[:model].nil?
-		model_name = args[:model].capitalize
+		model_name = args[:model]
 		file_name = model_name.ext("xml")
 
 		verify_file_name file_name
@@ -49,7 +49,7 @@ namespace :gen do
 	desc "Adds a new api controller, example: rake gen:api[User]"
 	task :api, [:model] => [:rake_dot_net_initialize, :create_xml_file] do |t, args|
 		raise "name parameter required, example: rake gen:api[User]" if args[:model].nil?
-		model_name = args[:model].capitalize
+		model_name = args[:model]
 		file_name = model_name.ext("xml")
 
 		verify_file_name file_name
@@ -73,7 +73,7 @@ namespace :gen do
 	desc "Adds a new controller, example: rake gen:controller[User]"
 	task :controller, [:model] => [:rake_dot_net_initialize, :create_xml_file] do |t, args|
 		raise "name parameter required, example: rake gen:controller[User]" if args[:model].nil?
-		model_name = args[:model].capitalize
+		model_name = args[:model]
 		file_name = model_name.ext("xml")
 
 		verify_file_name file_name
@@ -94,7 +94,7 @@ namespace :gen do
 	desc "Adds a new repository, example: rake gen:repository[User]"
 	task :repository, [:model] => [:rake_dot_net_initialize, :create_xml_file] do |t, args|
 		raise "name parameter required, example: rake gen:repository[User]" if args[:model].nil?
-		model_name = args[:model].capitalize
+		model_name = args[:model]
 		file_name = model_name.ext("xml")
 
 		verify_file_name file_name
@@ -117,7 +117,7 @@ namespace :gen do
 	task :view, [:model, :type, :use_bs_grid] => [:rake_dot_net_initialize, :create_xml_file] do |t, args|
 		raise "name and view type parameters are required, example: rake gen:view[Edit,User]" if args[:model].nil? || args[:type].nil?
 		type = args[:type].downcase
-		model_name = args[:model].capitalize
+		model_name = args[:model]
 		use_bs_grid = args[:use_bs_grid]
 		file_name = model_name.ext("xml")
 
@@ -157,7 +157,7 @@ namespace :gen do
 	desc "Adds a new test controller file, example: rake gen:test[User]"
 	task :test, [:model] => [:rake_dot_net_initialize, :create_xml_file] do |t, args|
 		raise "name parameter required, example: rake gen:test[User]" if args[:model].nil?
-		model_name = args[:model].capitalize
+		model_name = args[:model]
 		file_name = model_name.ext("xml")
 
 		verify_file_name file_name
@@ -173,7 +173,7 @@ namespace :gen do
 	desc "adds a CRUD scaffold, example: rake gen:crudFor[Entity]"
 	task :crudFor, [:model] => [:rake_dot_net_initialize, :create_xml_file] do |t, args|
 		raise "name parameter required, example: rake gen:crudFor[User]" if args[:model].nil?
-		model_name = args[:model].capitalize
+		model_name = args[:model]
 		file_name = model_name.ext("xml")
 
 		verify_file_name file_name
