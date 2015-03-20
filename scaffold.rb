@@ -1,5 +1,6 @@
 begin
 	require 'nokogiri'
+	require 'rake'
 	Dir[File.dirname(__FILE__) + '/templates/*.rb'].each {|file| require file }
 rescue LoadError
 	puts "============ note ============="
@@ -17,9 +18,20 @@ end
 
 namespace :gen do
 
+	desc "creates models for each table in the data base, example: rake gen:fullDbModels"
+	task :full_db_models, [] => :rake_dot_net_initialize do |t, args|
+		system("XmlGenerator/Generator.exe Model fulldb #{@mvc_project_directory}")
+		Dir.glob('*.xml') do |xml_file|
+		  file_name = File.basename(xml_file, File.extname(xml_file))
+			Rake::Task['gen:model'].invoke(file_name)
+			Rake::Task['gen:model'].reenable
+		end
+
+	end
+
 	desc "creates an xml file from a dll model, example: rake gen:new_xml_file[User]"
 	task :create_xml_file, [:model] => :rake_dot_net_initialize do |t, args|
-		raise "name parameter required, example: rake gen:api[User]" if args[:model].nil?
+	  raise "name parameter required, example: rake gen:api[User]" if args[:model].nil?
 		model_name = args[:model]
 		file_name = model_name.ext("xml")
 
