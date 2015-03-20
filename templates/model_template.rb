@@ -73,12 +73,10 @@ def get_attributes property
 end
 
 def get_data_type property
-    type = "string"
+    type = @data_types[property.attribute("dataType").to_s]
     name = property.name.to_s
 
-    if name == "Id" || (name[(name.length() -2)...name.length] == "Id")
-        type = property.xpath("//entity").first['primaryKeyType']
-    elsif property.has_attribute?('validator')
+    if property.has_attribute?('validator')
         is_required = false
         attributes = property.attribute('validator').to_s().split(' ')
 
