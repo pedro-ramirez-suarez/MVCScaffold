@@ -97,6 +97,8 @@ def get_validators elements
         validators.each_with_index  do |validator, index|
 
             validator = (validator == 'required') ? 'notEmpty' : validator
+            params =  (validator == 'phone') ? 'country : "US"' : params
+
             js_validators += "#{validator}: {
                             #{params}
                           }"
