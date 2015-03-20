@@ -19,5 +19,12 @@
         growl: "growl/jquery.growl",
         gremlins: "gremlins.min",
         spinjs: "spinjs"
+    },
+    shim: {
+        bootstrap: ["jquery"],
+        bootstrapValidator:["bootstrap"],
+        jqBsGrid: ["jquery", "jqBsGridLocation"],
+        bsPagination: ["jquery", "bsPaginationLocation"],
+        juiFilter: ["jquery", "juiFilterLocation"]
     }
 };
