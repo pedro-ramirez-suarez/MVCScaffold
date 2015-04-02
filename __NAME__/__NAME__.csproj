@@ -208,6 +208,7 @@
     <Content Include="Scripts\app\Crmuser.binding.js" />
     <Content Include="Scripts\app\Crmuser.controller.js" />
     <Content Include="Scripts\app\Crmuser.validate.js" />
+    <Content Include="Scripts\bootstrap.typeahead.js" />
     <Content Include="Scripts\bs_grid\jquery.bs_grid.js" />
     <Compile Include="Repositories\CrmuserRepository.cs" />
     <Compile Include="Repositories\EmailmessagesRepository.cs" />
@@ -321,6 +322,7 @@
     <Content Include="Scripts\require.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\spinjs.js" />
     <Content Include="Scripts\underscore.js" />
     <Content Include="Scripts\Utils.js" />
     <Content Include="Scripts\_references.js" />

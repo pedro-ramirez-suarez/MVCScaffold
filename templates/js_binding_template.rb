@@ -12,7 +12,7 @@ define(['jquery', 'knockout', 'underscore', 'moment'], function ($, ko, _, momen
 
             var options = {
                 pickTime: false,
-                defaultDate: AppViewModel.dateSelected()
+                defaultDate: #{name}AppViewModel.dateSelected()
             };
 
             $(element).parent().datetimepicker(options);
@@ -33,7 +33,7 @@ define(['jquery', 'knockout', 'underscore', 'moment'], function ($, ko, _, momen
         }
     };
 
-    var AppViewModel = {
+    var #{name}AppViewModel = {
         #{name}s: ko.observableArray(
             model#{name}
         ),
@@ -50,10 +50,12 @@ define(['jquery', 'knockout', 'underscore', 'moment'], function ($, ko, _, momen
             var self = this;
             $.post("/#{name}/Delete", { id: this.Id }, function (success) {
                 if (Boolean(success)) {
-                    AppViewModel.#{name}s.remove(self);
+                    #{name}AppViewModel.#{name}s.remove(self);
                 }
             });
         },
+
+        rootElement: null,
 
         dateSelected: ko.observable()#{get_selectfrom_template(model, 'binding_init', '')}
 
@@ -61,9 +63,13 @@ define(['jquery', 'knockout', 'underscore', 'moment'], function ($, ko, _, momen
     };
 
     $(document).ready(function () {
-        ko.applyBindings(AppViewModel);
+        //if a root element is defined, then use it
+        if(#{name}AppViewModel.rootElement == null)
+            ko.applyBindings(#{name}AppViewModel ); 
+        else
+            ko.applyBindings(#{name}AppViewModel,document.getElementById(#{name}AppViewModel.rootElement)); 
     });
-    return AppViewModel;
+    return #{name}AppViewModel;
 
 });
 template

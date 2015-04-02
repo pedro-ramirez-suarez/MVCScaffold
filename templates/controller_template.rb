@@ -186,6 +186,51 @@ namespace #{@solution_name_sans_extension}.Controllers
             return Json(new { total_rows = totalRows, page_data = list });;
         }
 
+        //By default the Id is a Guid, change it to whatever you need
+        public JsonResult GetTextForAutocomplete(Guid id, string idField, string showField)
+        {
+            var found = #{name_downcase}Repository.GetMany(
+                where: string.Format("{0} = @id", idField),
+                orderBy: "",
+                args: new Dictionary<string, object> { { "id", id } },
+                topN: null).FirstOrDefault();
+            if(found == null)
+                return Json(new { name = "" }, JsonRequestBehavior.AllowGet);    
+            
+            var show = found.GetType().GetProperties().FirstOrDefault(p => p.Name.ToLower() == showField.ToLower());            
+            return Json(new { name = show.GetValue(found) }, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult Search(string query, string searchField, string idField, string showField, string order)
+        {
+            query = query.Trim();
+            if (!query.StartsWith("%"))
+                query = "%" + query;
+            if (!query.EndsWith("%"))
+                query += "%";
+            var found = #{name_downcase}Repository.GetMany(
+                where: string.Format("{0} like @query", searchField),
+                orderBy: order + " DESC",
+                args: new Dictionary<string, object> { { "query", query } },
+                topN: null);
+
+            if (found == null || found.Count() == 0)
+                return Json(new List<object> { new { id = "00000000-0000-0000-0000-000000000000", name = string.Format("{0}: No results found", query.Replace("%","")) } }, JsonRequestBehavior.AllowGet);
+
+            //create the object to return
+            var allFound = new List<object>();
+            var id = found.First().GetType().GetProperties().FirstOrDefault(p => p.Name.ToLower() == idField.ToLower());
+            var show = found.First().GetType().GetProperties().FirstOrDefault(p => p.Name.ToLower() == showField.ToLower());
+            if (id == null || show == null)
+                throw new Exception("Id field or Show fields doest not belog to the entity");
+            foreach (var f in found)
+            { 
+                allFound.Add(new { id = id.GetValue(f), name = show.GetValue(f) });
+            }
+
+            return Json(allFound, JsonRequestBehavior.AllowGet);
+        }
+
         #endregion
     }
 }

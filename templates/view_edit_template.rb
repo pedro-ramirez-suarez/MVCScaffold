@@ -28,7 +28,7 @@ return <<template
 </form>
 
 <script>
-    require(["/Scripts/app/#{name}.controller.js", "/Scripts/app/#{name}.binding.js", "/Scripts/app/#{name}.validate.js", 'utils'], function (#{name_downcase}Controller, appViewModel, formValidator, utils) {
+    require(["/Scripts/app/#{name}.controller.js", "/Scripts/app/#{name}.binding.js", "/Scripts/app/#{name}.validate.js", 'utils','typeahead'], function (#{name_downcase}Controller, appViewModel, formValidator, utils,type) {
         utils.spinner.show();
         var promise = #{name_downcase}Controller.get#{name}("@ViewBag.id");
         promise.done(function (ajaxResult) {
@@ -37,6 +37,33 @@ return <<template
             appViewModel.add(model);
             formValidator.initViewModel(appViewModel);
             formValidator.initValidator();
+
+            //The typeahead 
+            $.each($('.autocomplete'),function (index,element) {
+                $(element).typeahead({
+                    onSelect: function (item) {
+                        if (item.value == '00000000-0000-0000-0000-000000000000')
+                            setTimeout(function () { $(element).val(''); }, 100);
+                        //the sibling holds the id
+                        $(element).parent().children(':hidden:first').val(item.value).change();
+                    },
+                    ajax: {
+                        url:  '/' + $(element).attr('referencedtable') + '/search?searchField=' + $(element).attr('searchfield') + '&idField=' + $(element).attr('idfield') + '&showField=' + $(element).attr('showfield') + '&order=' + $(element).attr('order'),
+                        triggerLength: 2
+                    }
+                });
+            });
+            //fill the autocomplete text boxes
+            $.each($('.autocomplete'),function (index,element) {
+                //launch a search for each hidden
+                $.get(
+                    '/' + $(element).attr('referencedtable') + '/GetTextForAutocomplete?id=' + $(element).parent().children(':hidden:first').val() + '&idField=' + $(element).attr('idfield') + '&showField=' + $(element).attr('showfield'),
+                    {},
+                    function (data){
+                        $(element).val(data.name);
+                    });
+                
+            });
 
             utils.spinner.hide();
         });
@@ -66,6 +93,8 @@ def get_fields_edit model
                 fields += @form_fields[:checkbox] %[property_name, property_name, "data-bind='checked: #{entity_name}#{property_name}'"]
         elsif node.at_css("SelectFrom")
             fields += get_selectfrom_template model, 'edit_create', node.attribute('SelectFrom')
+        elsif node.at_css("Autocomplete")
+            fields += get_autocomplete_template model, node, 'edit_create' , node.attribute('Autocomplete')
         elsif node.at_css("HasOne")
             reference = node.attribute('HasOne')
             nkg_obj = node.xpath("//entity")

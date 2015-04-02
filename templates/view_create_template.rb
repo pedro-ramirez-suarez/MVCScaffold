@@ -26,18 +26,37 @@ return <<template
     </div>
 </form>
 <script>
-    require(["/Scripts/app/#{name}.controller.js", "/Scripts/app/#{name}.binding.js", "/Scripts/app/#{name}.validate.js", 'utils'], function (#{name_downcase}Controller, appViewModel, formValidator, utils) {
+    require(["/Scripts/app/#{name}.controller.js", "/Scripts/app/#{name}.binding.js", "/Scripts/app/#{name}.validate.js", 'utils','typeahead'], function (#{name_downcase}Controller, appViewModel, formValidator, utils, type) {
         utils.spinner.show();
         var promise = #{name_downcase}Controller.get#{name}("00000000-0000-0000-0000-000000000000");
         promise.done(function (ajaxResult) {
             var model = ajaxResult.#{name_downcase};
             #{format_properties(model, 'create_edit')}
             appViewModel.add(model);
+            //set the root element
+            appViewModel.rootElement='create_#{entity_name.downcase}_form';
             formValidator.initViewModel(appViewModel);
             formValidator.initValidator();
+            //The typeahead 
+            $.each($('.autocomplete'),function (index,element) {
+                $(element).typeahead({
+                    onSelect: function (item) {
+                        if (item.value == '00000000-0000-0000-0000-000000000000')
+                            setTimeout(function () { $(element).val(''); }, 100);
+                        //the sibling holds the id
+                        $(element).parent().children(':hidden:first').val(item.value).change();
+                    },
+                    ajax: {
+                        url:  '/' + $(element).attr('referencedtable') + '/search?searchField=' + $(element).attr('searchfield') + '&idField=' + $(element).attr('idfield') + '&showField=' + $(element).attr('showfield') + '&order=' + $(element).attr('order'),
+                        triggerLength: 2
+                    }
+                });
+            });
+
+            utils.spinner.hide();
         });
 
-        utils.spinner.hide();
+        
     });
 </script>
 template
@@ -60,6 +79,8 @@ def get_fields model
 
         if node.at_css("SelectFrom")
             fields += get_selectfrom_template model, 'edit_create', node.attribute('SelectFrom')
+        elsif node.at_css("Autocomplete")
+            fields += get_autocomplete_template model, node, 'edit_create' , node.attribute('Autocomplete')
         elsif node.at_css("HasOne")
             next
         elsif node.attribute('validator').to_s["bool"]

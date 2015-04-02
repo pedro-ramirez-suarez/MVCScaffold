@@ -15,7 +15,7 @@ return <<template
 <input type="hidden" id="refresh" value="no">
 
 <h2>Details</h2>
-<div data-bind="foreach: #{model['name']}s">
+<div data-bind="foreach: #{model['name']}s" id="details_#{entity_name.downcase}">
     <table class="table table">
         <thead>
             <tr>

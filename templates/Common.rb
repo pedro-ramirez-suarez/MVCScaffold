@@ -99,6 +99,42 @@ def get_selectfrom_template model, file_type, field_name
     result
 end
 
+
+def get_autocomplete_template model, node, file_type, field_name
+    result = ""
+    property_name = node.name
+    entity_name = model['name']
+    searchField = ""
+    idField =""
+    showField = ""
+    order = ""    
+    referencedtable =""
+    found = false
+    #return result if model.Autocomplete.empty?
+    #get all the data that we need to set the control
+    node.xpath('//Autocomplete').each do |element|
+        searchField = element['SearchField']
+        idField = element['ReferencedField']
+        showField = element['DisplayField']
+        order = element['OrderByField']
+        referencedtable = element['ReferencedTable']
+    end
+
+    case file_type
+    when 'binding_init'
+        result = ""
+    when 'binding_search'
+        result = ""
+    when 'validate_init'
+        result = ""
+    when 'edit_create'
+        result = @form_fields[:autocomplete] %[property_name, property_name,"data-bind='value: #{entity_name}.#{property_name}'",  "#{property_name}Name", searchField, idField, showField, order, referencedtable]
+    end
+
+
+    result
+end
+
 def get_datepicker_template model, file_type
     result = ""
     select_name = ""
@@ -181,7 +217,6 @@ def get_has_many_template model, file_type = ""
 
     result 
 end
-
 @data_types = {}
 @data_types["bigint"] = "Int64"
 @data_types["binary"] = "Byte[]"

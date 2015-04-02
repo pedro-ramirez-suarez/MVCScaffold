@@ -56,3 +56,15 @@
                         </div>
                     </div>
                     "
+@form_fields[:autocomplete] = "
+                    <div class='form-group'>
+                        <label class='col-sm-2 control-label'>%s</label>
+                        <div class='col-sm-4'>
+                            <input type='hidden' name='%s' %s/>
+                            <input type='text' name='%s' class='form-control autocomplete' 
+                            searchfield='%s' idfield='%s' showfield='%s' order='%s' referencedtable='%s'
+                            />
+                        </div>
+                    </div>
+                    "
+

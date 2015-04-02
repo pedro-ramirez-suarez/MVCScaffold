@@ -16,9 +16,9 @@ return <<template
 <input type="hidden" id="refresh" value="no">
 
 <h2>#{name}</h2>
-
+<div id="index_#{name.downcase}">
 #{(use_bs_grid ? grid_container: get_table(model))}
-
+</div>
 <a href="/#{name}/Create" class="btn btn-primary">Add</a>
     
 <script>

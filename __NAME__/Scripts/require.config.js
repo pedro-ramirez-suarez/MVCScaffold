@@ -18,13 +18,16 @@
         jqBsGridLocation: "bs_grid/en.min",
         growl: "growl/jquery.growl",
         gremlins: "gremlins.min",
-        spinjs: "spinjs"
+        spinjs: "spinjs",
+        typeahead: "bootstrap.typeahead"
     },
     shim: {
         bootstrap: ["jquery"],
-        bootstrapValidator:["bootstrap"],
-        jqBsGrid: ["jquery", "jqBsGridLocation"],
+	    typeahead: ['bootstrap'],
+	    bootstrapValidator:["bootstrap"],
+	    jqBsGrid: ["jquery", "jqBsGridLocation"],
         bsPagination: ["jquery", "bsPaginationLocation"],
         juiFilter: ["jquery", "juiFilterLocation"]
+
     }
 };
