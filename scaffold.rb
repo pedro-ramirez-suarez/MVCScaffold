@@ -124,10 +124,13 @@ namespace :gen do
 		create_repository_template name, primaryKeyType, entityNameSpace
 	end	
 
-	desc "Adds a new view, you can choose to use bs_grid plug in for index view with a optional third parameter <true>
-	, example: rake gen:view[<Edit, Create, Details, List>, User, <true>]"
+	desc "Adds a new view, you can choose to use bs_grid plug in for index view with a optional third parameter <true>, 
+	example: rake gen:view[Entity,<Edit, Create, Details, Index>,<true>]. \nTo create partial views set a extra parameter 
+	partial=true, example: rake gen:view[User,Edit] partial=true"
 	task :view, [:model, :type, :use_bs_grid] => [:rake_dot_net_initialize, :create_xml_file] do |t, args|
 		raise "name and view type parameters are required, example: rake gen:view[Edit,User]" if args[:model].nil? || args[:type].nil?
+		@use_partial_views = ENV["partial"] == "true"
+
 		type = args[:type].downcase
 		model_name = args[:model]
 		use_bs_grid = args[:use_bs_grid]
@@ -153,7 +156,7 @@ namespace :gen do
 		when "details"
 			save view_details_template(model), "#{@mvc_project_directory}/Views/#{name}/Details.cshtml"
 			add_cshtml_node name, "Details"
-		when "list"
+		when "index"
 			puts use_bs_grid
 			if use_bs_grid
 				create_js_bs_grid_template model
@@ -182,9 +185,11 @@ namespace :gen do
 		create_tests_controller_template main_model
 	end	
 
-	desc "adds a CRUD scaffold, example: rake gen:crudFor[Entity]"
+	desc "adds a CRUD scaffold, example: rake gen:crudFor[Entity]. \nTo create partial views set a extra parameter partial=true, example: rake gen:crudFor[Entity] partial=true"
 	task :crudFor, [:model] => [:rake_dot_net_initialize, :create_xml_file] do |t, args|
 		raise "name parameter required, example: rake gen:crudFor[User]" if args[:model].nil?
+		@use_partial_views = ENV["partial"] == "true"
+
 		model_name = args[:model]
 		file_name = model_name.ext("xml")
 

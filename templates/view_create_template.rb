@@ -5,60 +5,57 @@ name = entity_name
 name_downcase = name.downcase
 
 return <<template
-@{
-    ViewBag.page = "#{entity_name}";
-    ViewBag.Title = "#{entity_name} | Create";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
+<div id="#{name_downcase}_template">
+    #{@use_partial_views ? "" : get_shared_layout(name)}
 
-
-<div class="page-header text-center">
-    <h2>Create</h2>
-</div>
-<form id="create_#{entity_name.downcase}_form" method="post" class="form-horizontal #{model['name'].downcase}_form" action="create" role="form" data-bind="foreach: #{entity_name}s">
-    #{fields}
-    <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
-            <!-- Do NOT use name="submit" or id="submit" for the Submit button -->
-            <button type="submit" class="btn btn-primary">Create</button>
-
-        </div>
+    <div class="page-header text-center">
+        <h2>Create</h2>
     </div>
-</form>
-<script>
-    require(["/Scripts/app/#{name}.controller.js", "/Scripts/app/#{name}.binding.js", "/Scripts/app/#{name}.validate.js", 'utils','typeahead'], function (#{name_downcase}Controller, appViewModel, formValidator, utils, type) {
-        utils.spinner.show();
-        var promise = #{name_downcase}Controller.get#{name}("00000000-0000-0000-0000-000000000000");
-        promise.done(function (ajaxResult) {
-            var model = ajaxResult.#{name_downcase};
-            #{format_properties(model, 'create_edit')}
-            appViewModel.add(model);
-            //set the root element
-            appViewModel.rootElement='create_#{entity_name.downcase}_form';
-            formValidator.initViewModel(appViewModel);
-            formValidator.initValidator();
-            //The typeahead 
-            $.each($('.autocomplete'),function (index,element) {
-                $(element).typeahead({
-                    onSelect: function (item) {
-                        if (item.value == '00000000-0000-0000-0000-000000000000')
-                            setTimeout(function () { $(element).val(''); }, 100);
-                        //the sibling holds the id
-                        $(element).parent().children(':hidden:first').val(item.value).change();
-                    },
-                    ajax: {
-                        url:  '/' + $(element).attr('referencedtable') + '/search?searchField=' + $(element).attr('searchfield') + '&idField=' + $(element).attr('idfield') + '&showField=' + $(element).attr('showfield') + '&order=' + $(element).attr('order'),
-                        triggerLength: 2
-                    }
+    <form id="create_#{entity_name.downcase}_form" method="post" class="form-horizontal #{model['name'].downcase}_form" action="create" role="form" data-bind="foreach: #{entity_name}s">
+        #{fields}
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <!-- Do NOT use name="submit" or id="submit" for the Submit button -->
+                <button type="submit" class="btn btn-primary">Create</button>
+
+            </div>
+        </div>
+    </form>
+    <script>
+        require(["/Scripts/app/#{name}.controller.js", "/Scripts/app/#{name}.binding.js", "/Scripts/app/#{name}.validate.js", 'utils','typeahead'], function (#{name_downcase}Controller, appViewModel, formValidator, utils, type) {
+            utils.spinner.show();
+            var promise = #{name_downcase}Controller.get#{name}("00000000-0000-0000-0000-000000000000");
+            promise.done(function (ajaxResult) {
+                var model = ajaxResult.#{name_downcase};
+                #{format_properties(model, 'create_edit')}
+                appViewModel.add(model);
+                //set the root element
+                appViewModel.rootElement='create_#{entity_name.downcase}_form';
+                formValidator.initViewModel(appViewModel);
+                formValidator.initValidator();
+                //The typeahead 
+                $.each($('.autocomplete'),function (index,element) {
+                    $(element).typeahead({
+                        onSelect: function (item) {
+                            if (item.value == '00000000-0000-0000-0000-000000000000')
+                                setTimeout(function () { $(element).val(''); }, 100);
+                            //the sibling holds the id
+                            $(element).parent().children(':hidden:first').val(item.value).change();
+                        },
+                        ajax: {
+                            url:  '/' + $(element).attr('referencedtable') + '/search?searchField=' + $(element).attr('searchfield') + '&idField=' + $(element).attr('idfield') + '&showField=' + $(element).attr('showfield') + '&order=' + $(element).attr('order'),
+                            triggerLength: 2
+                        }
+                    });
                 });
+
+                utils.spinner.hide();
             });
 
-            utils.spinner.hide();
+            
         });
-
-        
-    });
-</script>
+    </script>
+</div>
 template
 end
 
@@ -94,4 +91,14 @@ def get_fields model
     end
     fields
 
+end
+
+def get_shared_layout name
+return <<template
+@{
+        ViewBag.page = "#{entity_name}";
+        ViewBag.Title = "#{entity_name} | Create";
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+template
 end

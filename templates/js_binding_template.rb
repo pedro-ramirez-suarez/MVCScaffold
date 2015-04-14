@@ -1,5 +1,7 @@
 def js_binding_template model
     name = model['name']
+    name_downcase = name.downcase
+
 return <<template
 define(['jquery', 'knockout', 'underscore', 'moment'], function ($, ko, _, moment) {
     if ($("#refresh").val() == 'yes') { location.reload(); } else { $('#refresh').val('yes'); }
@@ -55,7 +57,7 @@ define(['jquery', 'knockout', 'underscore', 'moment'], function ($, ko, _, momen
             });
         },
 
-        rootElement: null,
+        rootElement: "#{@use_partial_views ? name_downcase+"_template" : ""}",
 
         dateSelected: ko.observable()#{get_selectfrom_template(model, 'binding_init', '')}
 
@@ -64,7 +66,7 @@ define(['jquery', 'knockout', 'underscore', 'moment'], function ($, ko, _, momen
 
     $(document).ready(function () {
         //if a root element is defined, then use it
-        if(#{name}AppViewModel.rootElement == null)
+        if(#{name}AppViewModel.rootElement)
             ko.applyBindings(#{name}AppViewModel ); 
         else
             ko.applyBindings(#{name}AppViewModel,document.getElementById(#{name}AppViewModel.rootElement)); 

@@ -6,37 +6,34 @@ def view_index_template model, use_bs_grid = false
     grid_container = "<div id='bs_grid_#{name_downcase}'></div>"
 
 return <<template
-@{
-    ViewBag.page = "#{name}";
-    ViewBag.Title = "#{name} | List";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-    
-}
+<div id="#{name_downcase}_template">
+    #{@use_partial_views ? "" : get_shared_layout(name)}
 
-<input type="hidden" id="refresh" value="no">
+    <input type="hidden" id="refresh" value="no">
 
-<h2>#{name}</h2>
-<div id="index_#{name.downcase}">
-#{(use_bs_grid ? grid_container: get_table(model))}
-</div>
-<a href="/#{name}/Create" class="btn btn-primary">Add</a>
-    
-<script>
-    require(["/Scripts/app/#{name}.controller.js", "/Scripts/app/#{name}.binding.js", 'moment', 'utils', 'underscore' #{grid_file if use_bs_grid}], function (#{name_downcase}Controller, appViewModel, moment, utils, _) {
-        utils.spinner.show();
-        var promise = #{name_downcase}Controller.get#{name}s();
+    <h2>#{name}</h2>
+    <div id="index_#{name.downcase}">
+    #{(use_bs_grid ? grid_container: get_table(model))}
+    </div>
+    <a href="/#{name}/Create" class="btn btn-primary">Add</a>
+        
+    <script>
+        require(["/Scripts/app/#{name}.controller.js", "/Scripts/app/#{name}.binding.js", 'moment', 'utils', 'underscore' #{grid_file if use_bs_grid}], function (#{name_downcase}Controller, appViewModel, moment, utils, _) {
+            utils.spinner.show();
+            var promise = #{name_downcase}Controller.get#{name}s();
 
-        promise.done(function (ajaxResult) {
-            _.each(ajaxResult.#{name_downcase}s, function (item) {
-                var model = ajaxResult.#{name_downcase}s;
-                #{format_properties(model, 'index')}
-                appViewModel.add(item);
+            promise.done(function (ajaxResult) {
+                _.each(ajaxResult.#{name_downcase}s, function (item) {
+                    var model = ajaxResult.#{name_downcase}s;
+                    #{format_properties(model, 'index')}
+                    appViewModel.add(item);
+                });
+
+                utils.spinner.hide();
             });
-
-            utils.spinner.hide();
         });
-    });
-</script>
+    </script>
+</div>
 template
 end
 
@@ -98,5 +95,15 @@ return <<template
             </tr>
         </tbody>
     </table>
+template
+end
+
+def get_shared_layout name
+return <<template
+@{
+        ViewBag.page = "#{name}";
+        ViewBag.Title = "#{name} | List";
+        Layout = "~/Views/Shared/_Layout.cshtml";   
+    }
 template
 end

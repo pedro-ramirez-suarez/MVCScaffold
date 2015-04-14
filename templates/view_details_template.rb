@@ -6,48 +6,45 @@ def view_details_template model
     name_downcase = name.downcase
 
 return <<template
-@{
-    ViewBag.page = "#{entity_name}";
-    ViewBag.Title = "#{entity_name} | Details";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
+<div id="#{name_downcase}_template">
+    #{@use_partial_views ? "" : get_shared_layout(name)}
 
-<input type="hidden" id="refresh" value="no">
+    <input type="hidden" id="refresh" value="no">
 
-<h2>Details</h2>
-<div data-bind="foreach: #{model['name']}s" id="details_#{entity_name.downcase}">
-    <table class="table table">
-        <thead>
-            <tr>
-                <th>
-                    #{model['name']}
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            #{labels}
-        </tbody>
-    </table>
+    <h2>Details</h2>
+    <div data-bind="foreach: #{model['name']}s" id="details_#{entity_name.downcase}">
+        <table class="table table">
+            <thead>
+                <tr>
+                    <th>
+                        #{model['name']}
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                #{labels}
+            </tbody>
+        </table>
 
-    <a data-bind="attr: {href:'/#{model['name']}'}" class="btn btn-primary">Back</a>
-    <a data-bind="attr: {href:'/#{model['name']}/Edit/' + #{(entity_name + '.' if @is_view_model)}Id}" class="btn btn-primary">Edit</a>
-</div>
+        <a data-bind="attr: {href:'/#{model['name']}'}" class="btn btn-primary">Back</a>
+        <a data-bind="attr: {href:'/#{model['name']}/Edit/' + #{(entity_name + '.' if @is_view_model)}Id}" class="btn btn-primary">Edit</a>
+    </div>
 
-<script>
-    require(["/Scripts/app/#{name}.controller.js", "/Scripts/app/#{name}.binding.js", 'utils'], function (#{name_downcase}Controller, appViewModel, utils) {
-        utils.spinner.show();
-        var promise = #{name_downcase}Controller.get#{name}("@ViewBag.id");
+    <script>
+        require(["/Scripts/app/#{name}.controller.js", "/Scripts/app/#{name}.binding.js", 'utils'], function (#{name_downcase}Controller, appViewModel, utils) {
+            utils.spinner.show();
+            var promise = #{name_downcase}Controller.get#{name}("@ViewBag.id");
 
-        promise.done(function (ajaxResult) {
-            var model = ajaxResult.#{name_downcase};
-            #{format_properties(model)}
-            appViewModel.add(model);
+            promise.done(function (ajaxResult) {
+                var model = ajaxResult.#{name_downcase};
+                #{format_properties(model)}
+                appViewModel.add(model);
 
-            utils.spinner.hide();
+                utils.spinner.hide();
+            });
         });
-    });
-</script>
-
+    </script>
+</div>
 template
 end
 
@@ -127,4 +124,14 @@ def get_has_many_labels model
             </tr>"
     end
     labels
+end
+
+def get_shared_layout name
+return <<template
+@{
+        ViewBag.page = "#{entity_name}";
+        ViewBag.Title = "#{entity_name} | Details";
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+template
 end
