@@ -56,6 +56,7 @@
                     <ul class="nav navbar-nav">
                         <li @if (ViewBag.page == "Home") { <text> class=" active" </text>   ; }><a href="/">Home</a></li>
                     </ul>
+                    <!--toplinks-->
                     @if (Request.IsAuthenticated)
                     {
                         using (Html.BeginForm("LogOff", "SignOn", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
