@@ -175,5 +175,15 @@ namespace __NAME__.DataAccess.Repositories
         {
             this.dataSource.Dispose();
         }
+
+        public void ExecuteStoredProcedure(string name, object parameters)
+        {
+            this.dataSource.ExecuteStoredProcedure(name, parameters);
+        }
+
+        public IEnumerable<T> ExecuteStoredProcedureReturnRows<T>(string name, object parameters)
+        {
+            return this.ExecuteStoredProcedureReturnRows<T>(name, parameters);
+        }
     }
 }
