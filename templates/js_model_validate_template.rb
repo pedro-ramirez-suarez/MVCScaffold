@@ -98,6 +98,7 @@ def get_validators elements
 
             validator = (validator == 'required') ? 'notEmpty' : validator
             params =  (validator == 'phone') ? 'country : "US"' : params
+            params =  (validator == 'zipCode') ? 'country : "US"' : params
 
             js_validators += "#{validator}: {
                             #{params}
