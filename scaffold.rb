@@ -399,8 +399,8 @@ namespace :gen do
 		source = "#{@mvc_project_directory}/Views/Shared/_Layout.cshtml"
 		file = File.open(source, "r")
  		
- 		content =  file.read.to_s.gsub("</ul>", 
- 			"<li @if (ViewBag.page == \"#{controller_name}\"){<text> class=\"active\"</text>;}><a href=\"/#{controller_name}\">#{display_name}</a></li>\n</ul>")
+ 		content =  file.read.to_s.gsub("<!--toplinks-->", 
+ 			"<li @if (ViewBag.page == \"#{controller_name}\"){<text> class=\"active\"</text>;}><a href=\"/#{controller_name}\">#{display_name}</a></li>\n<!--toplinks-->")
 
 		File.open(source, "w") do |f| 
 			f.write(content)
